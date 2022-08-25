@@ -1,10 +1,10 @@
 public class Persona {
-    // Declaracion de variables
+    // Declaracion de atributos
     private String Nombre, Genero;
     private int id, rut, edad, numero;
 
     //Constructor
-    Persona(){
+    public Persona(){
         Nombre = "";
         Genero = "";
         id = 0;
