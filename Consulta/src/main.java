@@ -9,72 +9,75 @@ public class main {
 		
 		// Variables globales
 		int Numero, Edad , Plibre = 0,Plibre_Pregunta = 0, max=10, opcion;
-		String Nombre, Genero;
+		String Nombre, Genero, Linea;
 		
 		// Creando Lista de personas
+	
 		
 		Persona[] personas = new Persona[10];
 		// Leer CVS....
-		if(Plibre < max) {
-			System.out.println("Cargando datos ....");
-			// datos 1
-			personas[Plibre] = new Persona();
-			personas[Plibre].SetId(Plibre);
-			System.out.println("Cargando datos ....");
-			personas[Plibre].SetNombre("Victor");
-			personas[Plibre].SetGenero("Masculino");
-			personas[Plibre].SetRut(2020);
-			personas[Plibre].SetEdad(22);
-			personas[Plibre].SetNumero(645656551);
-			
-			Plibre ++;
-			personas[Plibre] = new Persona();
-			// datos 2
-			personas[Plibre].SetId(Plibre);
-			personas[Plibre].SetNombre("Ramiro");
-			personas[Plibre].SetGenero("Masculino");
-			personas[Plibre].SetRut(2021);
-			personas[Plibre].SetEdad(22);
-			personas[Plibre].SetNumero(645656551);
-			
-			// datos 3
-			
-			Plibre ++;
-			personas[Plibre] = new Persona();
-			personas[Plibre].SetId(Plibre);
-			personas[Plibre].SetNombre("Victor");
-			personas[Plibre].SetGenero("Masculino");
-			personas[Plibre].SetRut(2023);
-			personas[Plibre].SetEdad(22);
-			personas[Plibre].SetNumero(645656551);	
-			
-			Plibre ++;
-			
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("src/bd_personas.csv"));
+			Linea = br.readLine();
+			while(Linea != null) {
+				String datos[] = Linea.split(";");
+				
+				if(Plibre <= max) {
+	
+					System.out.println("Cargando datos .... "+datos[0]);
+					personas[Plibre] = new Persona();
+					personas[Plibre].SetId(Integer.parseInt(datos[0]));
+					personas[Plibre].SetRut(Integer.parseInt(datos[1]));
+					personas[Plibre].SetNombre(datos[2]);
+					personas[Plibre].SetGenero(datos[3]);
+					personas[Plibre].SetEdad(Integer.parseInt(datos[4]));
+					personas[Plibre].SetNumero(Integer.parseInt(datos[5]));
+					Plibre ++;
+					System.out.println("El usuario: "+datos[2]+" Fue Cargado");
+				}
+				Linea = br.readLine();
+				
+			}
+		}	catch (FileNotFoundException ex) {
+			System.err.println(ex.getMessage());
+		}	catch (IOException ex) {
+			System.err.println(ex.getMessage());
 		}
+		
+		
+		// despues
 
 		// Carga de datos 
 		
 		Pregunta[] preguntas = new Pregunta[10];
-		if(Plibre_Pregunta <= max) {
-			preguntas[Plibre_Pregunta] = new Pregunta();
-			preguntas[Plibre_Pregunta].setIdPregunta(Plibre_Pregunta);
-			preguntas[Plibre_Pregunta].setIdCreador(1);
-			preguntas[Plibre_Pregunta].setDescripcion("¿aprueba o Rechaza?");
-			
-			Plibre_Pregunta ++;
-			preguntas[Plibre_Pregunta] = new Pregunta();
-			preguntas[Plibre_Pregunta].setIdPregunta(Plibre_Pregunta);
-			preguntas[Plibre_Pregunta].setIdCreador(2);
-			preguntas[Plibre_Pregunta].setDescripcion("¿Aborto legal?");
-			
-			Plibre_Pregunta ++;
-			preguntas[Plibre_Pregunta] = new Pregunta();
-			preguntas[Plibre_Pregunta].setIdPregunta(Plibre_Pregunta);
-			preguntas[Plibre_Pregunta].setIdCreador(3);
-			preguntas[Plibre_Pregunta].setDescripcion("¿Goku Gana?");
-			
-			
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("src/bd_preguntas.csv"));
+			Linea = br.readLine();
+			while(Linea != null) {
+				String datos[] = Linea.split(";");
+					if(Plibre_Pregunta <= max) {
+						preguntas[Plibre_Pregunta] = new Pregunta();
+						
+						preguntas[Plibre_Pregunta].setIdPregunta(Integer.parseInt(datos[0]));
+						preguntas[Plibre_Pregunta].setIdCreador(Integer.parseInt(datos[1]));
+						preguntas[Plibre_Pregunta].setDescripcion(datos[2]);
+						Plibre_Pregunta ++;
+					System.out.println("La pregunta : "+datos[2]+" Fue Cargada");
+				}
+				Linea = br.readLine();
+				}
+		}	catch (FileNotFoundException ex) {
+			System.err.println(ex.getMessage());
+		}	catch (IOException ex) {
+			System.err.println(ex.getMessage());
 		}
+		
+		
+		
+	
+			
+			
 		
 		
 		

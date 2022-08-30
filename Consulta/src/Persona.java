@@ -5,10 +5,10 @@ public class Persona {
 
     //Constructor
     public Persona(){
-        Nombre = "";
-        Genero = "";
-        id = 0;
+    	id = 0;
         rut = 0;
+    	Nombre = "";
+        Genero = "";
         edad = 0;
         numero = 0;
     }
