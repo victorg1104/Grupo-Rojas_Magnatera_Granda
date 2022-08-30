@@ -8,7 +8,7 @@ public class main {
 		BufferedReader Lector = new BufferedReader(new InputStreamReader(System.in));
 		
 		// Variables globales
-		int Numero, Edad , Plibre = 0,Plibre_Pregunta = 0, max=10, opcion;
+		int Numero, Edad , Plibre = 0,Plibre_Pregunta = 0, Plibre_Respuesta = 0, max=10, opcion;
 		String Nombre, Genero, Linea;
 		
 		// Creando Lista de personas
@@ -44,10 +44,9 @@ public class main {
 			System.err.println(ex.getMessage());
 		}
 		
-		
-		// despues
 
-		// Carga de datos 
+
+		// Carga de datos de las preguntas
 		
 		Pregunta[] preguntas = new Pregunta[10];
 		
@@ -73,7 +72,32 @@ public class main {
 			System.err.println(ex.getMessage());
 		}
 		
+		//Cargar las Respuestas.
 		
+		Respuesta[] respuestas = new Respuesta[10];
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("src/bd_respuesta.csv"));
+			Linea = br.readLine();
+			while(Linea != null) {
+				String datos[] = Linea.split(";");
+					if(Plibre_Respuesta <= max) {
+						respuestas[Plibre_Respuesta] = new Respuesta();
+						
+						respuestas[Plibre_Respuesta].setIdRespuesta(Integer.parseInt(datos[0]));
+						respuestas[Plibre_Respuesta].setIdPregunta(Integer.parseInt(datos[1]));
+						respuestas[Plibre_Respuesta].setIdPersona(Integer.parseInt(datos[2]));
+						respuestas[Plibre_Respuesta].setRespuesta_pregunta(datos[3]);
+						Plibre_Respuesta ++;
+					System.out.println("La Respuesta : "+datos[3]+" Fue Cargada");
+				}
+				Linea = br.readLine();
+				}
+		}	catch (FileNotFoundException ex) {
+			System.err.println(ex.getMessage());
+		}	catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 		
 	
 			
@@ -131,6 +155,9 @@ public class main {
 			
 			System.out.println("Ingreso con exito!!! ");
 			
+			
+			
+			
 		}
 		
 			
@@ -147,8 +174,10 @@ public class main {
 					+ "2. Mostrar Preguntas\n"
 					+ "3. Listar Tus Preguntas\n"
 					+ "4. Salir");
-			flag = false;
+			System.out.println("Ingrese su opcion: ");
+			 
 			}
+		
 			
 			
 	

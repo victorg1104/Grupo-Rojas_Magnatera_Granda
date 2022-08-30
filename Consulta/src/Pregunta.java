@@ -1,19 +1,23 @@
 public class Pregunta {
 	// Declaracion de atributos
-	int idPregunta, idCreador;
-	String Descripcion;
+	private int idPregunta, idCreador;
+	private String Descripcion;
 	
 	//Constructor
 	public Pregunta() {
+		
 		idPregunta = 0;
 		idCreador = 0;
 		Descripcion = "";
 	}
 	
 	// Getter y Setter
+	
+	
 	public int getIdPregunta() {
 		return idPregunta;
 	}
+
 	public void setIdPregunta(int idPregunta) {
 		this.idPregunta = idPregunta;
 	}
