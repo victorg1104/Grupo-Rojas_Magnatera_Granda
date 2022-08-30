@@ -12,7 +12,7 @@ public class main {
 		String Nombre, Genero, Linea;
 		
 		// Creando Lista de personas
-	
+		System.out.println("Cargando datos .... ");
 		
 		Persona[] personas = new Persona[10];
 		// Leer CVS....
@@ -24,7 +24,7 @@ public class main {
 				
 				if(Plibre <= max) {
 	
-					System.out.println("Cargando datos .... "+datos[0]);
+					
 					personas[Plibre] = new Persona();
 					personas[Plibre].SetId(Integer.parseInt(datos[0]));
 					personas[Plibre].SetRut(Integer.parseInt(datos[1]));
@@ -33,7 +33,7 @@ public class main {
 					personas[Plibre].SetEdad(Integer.parseInt(datos[4]));
 					personas[Plibre].SetNumero(Integer.parseInt(datos[5]));
 					Plibre ++;
-					System.out.println("El usuario: "+datos[2]+" Fue Cargado");
+					//System.out.println("El usuario: "+datos[2]+" Fue Cargado");
 				}
 				Linea = br.readLine();
 				
@@ -45,6 +45,7 @@ public class main {
 		}
 		
 
+		
 
 		// Carga de datos de las preguntas
 		
@@ -62,7 +63,7 @@ public class main {
 						preguntas[Plibre_Pregunta].setIdCreador(Integer.parseInt(datos[1]));
 						preguntas[Plibre_Pregunta].setDescripcion(datos[2]);
 						Plibre_Pregunta ++;
-					System.out.println("La pregunta : "+datos[2]+" Fue Cargada");
+					//System.out.println("La pregunta : "+datos[2]+" Fue Cargada");
 				}
 				Linea = br.readLine();
 				}
@@ -71,6 +72,8 @@ public class main {
 		}	catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
+		
+		
 		
 		//Cargar las Respuestas.
 		
@@ -89,7 +92,7 @@ public class main {
 						respuestas[Plibre_Respuesta].setIdPersona(Integer.parseInt(datos[2]));
 						respuestas[Plibre_Respuesta].setRespuesta_pregunta(datos[3]);
 						Plibre_Respuesta ++;
-					System.out.println("La Respuesta : "+datos[3]+" Fue Cargada");
+					//System.out.println("La Respuesta : "+datos[3]+" Fue Cargada");
 				}
 				Linea = br.readLine();
 				}
@@ -98,6 +101,9 @@ public class main {
 		}	catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
+		
+		System.out.println("Datos listo");
+		System.out.println("----------------------------------------------------");
 		
 	
 			
@@ -108,14 +114,18 @@ public class main {
 		
 		
 		
-		// Inicio Menu
-		System.out.println("Ingrese su Rut: ");
+		// Inicio Del Programa.
+		System.out.println("----------------------------------------------------");
+		System.out.println("Bienvenido a Planificación de consultas ciudadanas ");
+		System.out.println("Ingrese su Rut: \n");
+		
+		// Se verifica si el Rut Existe 
 		int rutx = 0;
 		rutx = Integer.parseInt(Lector.readLine());
 		//
 		boolean flag = true;
 		int R = 0;
-		
+		// verifica si existe el Usuario
 		for(int i = 0; i < Plibre; i++) {
 			
 			R = personas[i].GetRut();
@@ -124,13 +134,10 @@ public class main {
 			}
 		}
 		
-		// crea el nuevo usuario.
-		
-		String nombre, genero;
-		int edad, numero;
-		
-		
+		// crea el nuevo usuario Si este no existe 
 		if(flag) {
+			String nombre, genero;
+			int edad, numero;
 			System.out.println("Su rut no esta registrado, se creara un usuario nuevo: ");
 			personas[Plibre] = new Persona();
 			personas[Plibre].SetId(Plibre);
@@ -163,11 +170,12 @@ public class main {
 			
 	
 		
-	
+		System.out.println("----------------------------------------------------");
 		
 		
 		// Sub Menu 
-		flag = true;	
+		flag = true;
+		
 		
 		while(flag) {
 			System.out.println("1. Crear Pregunta\n"
@@ -175,6 +183,18 @@ public class main {
 					+ "3. Listar Tus Preguntas\n"
 					+ "4. Salir");
 			System.out.println("Ingrese su opcion: ");
+			opcion = Integer.parseInt(Lector.readLine());
+
+			
+			switch(opcion) {
+			case 1:
+				
+			case 4:
+				System.out.println("Su sesion se cerro.!!!");
+				flag = false;
+				
+			
+			}
 			 
 			}
 		
