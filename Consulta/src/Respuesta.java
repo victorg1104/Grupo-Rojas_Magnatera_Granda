@@ -5,7 +5,7 @@ public class Respuesta {
 	
 	//Constructor
 	public Respuesta() {
-		idRespuesta = 0;
+		
 		idPregunta = 0;
 		idPersona = 0;
 		Respuesta_pregunta = "";

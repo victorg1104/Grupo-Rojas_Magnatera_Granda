@@ -1,7 +1,13 @@
+
+
+import java.util.Hashtable;
+
+
 public class Persona {
     // Declaracion de atributos
     private String Nombre, Genero;
     private int id, rut, edad, numero;
+    private Hashtable<Integer,String> respuestas;
 
     //Constructor
     public Persona(){
@@ -11,9 +17,26 @@ public class Persona {
         Genero = "";
         edad = 0;
         numero = 0;
+        // keys = Id_pregunta : "respuesta"
+        respuestas = new Hashtable<Integer, String>();
+        
     }
-
+    
+ 
+    
+    
     // Getter y Setter
+    
+    public void setRespuesta(int id_pregunta,String respuesta) {
+    	
+    	respuestas.put(id_pregunta,respuesta);    	
+    }	
+    
+    public String getRespuesta(int id_pregunta) {
+    	return  respuestas.get(id_pregunta);
+    	
+    }
+	
     public int GetId() {
         return id;
     }
