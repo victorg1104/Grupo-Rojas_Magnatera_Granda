@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class CargarDatos {
+public class Datos {
 	private ArrayList<Consulta> consultas = new ArrayList<Consulta>();
 	private ArrayList<Persona> persona  = new ArrayList<Persona>();
 	private Persona pers = new Persona();
@@ -16,7 +16,7 @@ public class CargarDatos {
 	private int i;
 	private Consulta c = new Consulta();
 	
-	public CargarDatos(){
+	public Datos(){
 	
 	}
 	//Constructor 

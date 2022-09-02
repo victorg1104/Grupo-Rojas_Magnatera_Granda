@@ -19,7 +19,7 @@ public class Main {
 				
 				int  Plibre = 0, PlibreConsulta = 0, opcion;
 			
-				CargarDatos datos = new CargarDatos();
+				Datos datos = new Datos();
 				
 				PlibreConsulta = datos.cargarConsultas(PlibreConsulta);
 				
