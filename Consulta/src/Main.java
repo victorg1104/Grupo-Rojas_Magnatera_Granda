@@ -33,7 +33,7 @@ public class Main {
 				// Inicio Del Programa.
 				System.out.println("----------------------------------------------------");
 				System.out.println("Bienvenido a Planificación de consultas ciudadanas ");
-				System.out.println("Ingrese su Rut: \n");
+				System.out.println("Ingrese su Rut sin puntos ni guión: \n");
 				
 				// Se verifica si el Rut Existe
 				int rutx = 0;
@@ -43,8 +43,8 @@ public class Main {
 				//Si Existe 
 				
 				int usuario = datos.inicioSesion(rutx, Plibre);
-				System.out.println(usuario);
-				if(Plibre < usuario) { 
+
+				if(Plibre == usuario) { 
 					Plibre ++;
 				}	
 				
@@ -70,27 +70,30 @@ public class Main {
 					switch(opcion) {
 					case 1:
 						
-						PlibreConsulta = datos.agregarNewConsulta(PlibreConsulta, usuario-1);
+						PlibreConsulta = datos.newConsulta(PlibreConsulta, usuario);
 						break;
 						
 					case 2:
 						
 						int x = 0;
-						x = datos.listarConsultas(PlibreConsulta, usuario-1);
-						System.out.println("Ingrese su respuesta: ");
-						String Respuesta = lector.readLine();
-						datos.newRespuesta(x,usuario-1,Respuesta);
+						x = datos.listarConsultas(PlibreConsulta, usuario);
+						if(x != -1) {
+							System.out.println("Ingrese su respuesta: ");
+							String Respuesta = lector.readLine();
+							datos.newRespuesta(x,usuario,Respuesta);
+						}
 						break;
 
 					case 3:
 						
-						datos.listarRespuestas(PlibreConsulta, usuario-1);
+						boolean respuesta = false;
+						datos.listarRespuestas(PlibreConsulta, usuario, respuesta);
 						break;
 					
 						
 					case 4:
 						
-						datos.listarTusConsultas(PlibreConsulta,usuario-1);
+						datos.listarConsultas(PlibreConsulta,usuario,flag);
 						break;
 						
 					case 5:

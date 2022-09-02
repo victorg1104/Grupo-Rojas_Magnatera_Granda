@@ -9,12 +9,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class CargarDatos {
-	ArrayList<Consulta> consultas = new ArrayList<Consulta>();
-	ArrayList<Persona> persona  = new ArrayList<Persona>();
-	Persona pers = new Persona();
-	String  linea;
-	int i;
-	Consulta c = new Consulta();
+	private ArrayList<Consulta> consultas = new ArrayList<Consulta>();
+	private ArrayList<Persona> persona  = new ArrayList<Persona>();
+	private Persona pers = new Persona();
+	private String  linea;
+	private int i;
+	private Consulta c = new Consulta();
 	
 	public CargarDatos(){
 	
@@ -44,7 +44,7 @@ public class CargarDatos {
 			}	catch (IOException ex) {
 				System.err.println(ex.getMessage());
 			}	
-			System.out.println(PlibreConsulta);
+
 		return PlibreConsulta;	
 	}
 	
@@ -78,7 +78,7 @@ public class CargarDatos {
 		}	catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-		System.out.println(Plibre);
+
 		return Plibre;		
 	}
 	
@@ -111,30 +111,7 @@ public class CargarDatos {
 		c = consultas.get(x);
 		pers = persona.get(usuario);
 		c.addPersonas(pers);
-		pers.setRespuesta(x,respuesta);
-		
-		try {
-	        String content = "\n"+
-	        		String.valueOf(x)+";"+
-	        		String.valueOf(usuario)+";"+
-	        		respuesta;
-
-	        File file = new File("src/bd_respuesta.csv");
-
-	        // if file doesnt exists, then create it
-	        if (!file.exists())
-	            file.createNewFile();
-
-	        FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
-	        BufferedWriter bw = new BufferedWriter(fw);
-	        
-	        bw.append(content);
-	    
-	        bw.close();
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+		pers.newRespuesta(x, respuesta);
 	}
 	
 	
@@ -203,15 +180,13 @@ public class CargarDatos {
 			    } catch (IOException e) {
 			        e.printStackTrace();
 			    }
-				
-				Plibre ++;
 			}	
 			
 		return Plibre;
 	}
 	
 	
-	public int  agregarNewConsulta(int PlibreConsulta, int usuario) throws IOException {
+	public int  newConsulta(int PlibreConsulta, int usuario) throws IOException {
 		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
 		Consulta c = new Consulta();
 		c.setIdConsulta(PlibreConsulta);
@@ -222,29 +197,7 @@ public class CargarDatos {
 		
 		consultas.add(PlibreConsulta,c);
 		
-		try {
-	        String content = "\n"+ String.valueOf(PlibreConsulta)+
-	        		";"+
-	        		String.valueOf(usuario)+
-	        		";"+
-	        		descripcion;
-
-	        File file = new File("src/bd_consultas.csv");
-
-	        // if file doesnt exists, then create it
-	        if (!file.exists())
-	            file.createNewFile();
-
-	        FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
-	        BufferedWriter bw = new BufferedWriter(fw);
-	        
-	        bw.append(content);
-	    
-	        bw.close();
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+		c.newConsulta();
 		
 		PlibreConsulta++;
 		
@@ -255,40 +208,29 @@ public class CargarDatos {
 	public int listarConsultas(int PlibreConsulta,int usuario) throws IOException {
 		
 		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
-		for(int i = 0; i < PlibreConsulta; i++ ) {
-			c = consultas.get(i);			
-			pers = persona.get(usuario);
-
-			if(pers.getRespuesta(c.getIdConsulta()) == null) {
-				System.out.println(String.valueOf(i)+") " + c.getDescripcion());
-			}
-			}
-		
-		System.out.println("Ingrese id de consulta a responder: ");
-		int Opcion = Integer.parseInt(lector.readLine());
-		
-		return Opcion;
-	}
-	
-	
-	public void listarRespuestas(int PlibreConsulta,int usuario){
+		boolean flag = false;
+		pers = persona.get(usuario);
 		
 		for(int i = 0; i < PlibreConsulta; i++ ) {
 			c = consultas.get(i);			
-			pers = persona.get(usuario);
-
-			if(pers.getRespuesta(c.getIdConsulta()) != null) {
-				System.out.println(String.valueOf(i)+") " + c.getDescripcion());
-				System.out.println(pers.getRespuesta(c.getIdConsulta()));
-				}
-			}
+			flag = pers.listar(i, c);
+		}
+		
+		if(flag == false) {
+			System.out.println("Usted ha respondido todas las consultas\n");
+		}
+		else {
+			System.out.println("Ingrese id de consulta a responder: ");
+			int Opcion = Integer.parseInt(lector.readLine());
+		
+			return Opcion;
+		}
+		return -1;
 	}
-
-	public void listarTusConsultas(int PlibreConsulta,int usuario) throws IOException {
-	boolean flag=true;
+	
+	public void listarConsultas(int PlibreConsulta,int usuario, boolean flag){
 	for(int i = 0; i < PlibreConsulta; i++ ) {
 		c = consultas.get(i);			
-		pers = persona.get(usuario);
 		if(usuario == c.getIdCreador()) {
 			System.out.println(c.getDescripcion()+"\n");
 			flag=false;	
@@ -299,5 +241,19 @@ public class CargarDatos {
 		System.out.println("Usted no creo aun una pregunta....\n");
 		}
 	}
+	
+	public void listarRespuestas(int PlibreConsulta,int usuario, boolean respuesta){
+		pers = persona.get(usuario);
+		
+		for(int i = 0; i < PlibreConsulta; i++ ) {
+			c = consultas.get(i);			
+			respuesta = pers.listar(i, c, respuesta);
+		}
+		
+		if(respuesta == false) {
+			System.out.println("Usted no ha respondido ninguna consulta\n");
+		}
+	}
+
 
 }
