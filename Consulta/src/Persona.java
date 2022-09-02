@@ -1,13 +1,13 @@
 
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 
 public class Persona {
     // Declaracion de atributos
     private String Nombre, Genero;
     private int id, rut, edad, numero;
-    private Hashtable<Integer,String> respuestas;
+    private HashMap<Integer,String> respuestas;
 
     //Constructor
     public Persona(){
@@ -18,7 +18,7 @@ public class Persona {
         edad = 0;
         numero = 0;
         // keys = Id_pregunta : "respuesta"
-        respuestas = new Hashtable<Integer, String>();
+        respuestas = new HashMap<Integer, String>();
         
     }
     

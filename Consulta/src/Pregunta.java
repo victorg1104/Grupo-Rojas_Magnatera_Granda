@@ -42,18 +42,7 @@ public class Pregunta {
 	
 	// Getter y Setter
 	
-	public boolean noContiene(int id_persona) {
-		Persona perso = new Persona();
-		
-		for(int i = 0; i < personas.size(); i++) {
-			perso = personas.get(i);
-			if(id_persona == perso.GetId()) {
-				return false;	
-			}
-		}
-		
-		return true;
-	}
+	
 	
 	
 	public int getIdPregunta() {
