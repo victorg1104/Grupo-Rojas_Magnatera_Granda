@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -32,7 +35,6 @@ public class CargarDatos {
 	public int CargarPreguntas(int Plibre_Pregunta){
 		String  Linea;
 			try {
-				@SuppressWarnings("resource")
 				BufferedReader br = new BufferedReader(new FileReader("src/bd_preguntas.csv"));
 				Linea = br.readLine();
 				while(Linea != null) {
@@ -47,11 +49,14 @@ public class CargarDatos {
 					// lee la siguiente linea
 					Linea = br.readLine();
 					}
+				br.close();
 			}	catch (FileNotFoundException ex) {
 					System.err.println(ex.getMessage());
 			}	catch (IOException ex) {
 				System.err.println(ex.getMessage());
 			}
+			
+			
 			
 				
 		return Plibre_Pregunta;
@@ -68,7 +73,6 @@ public class CargarDatos {
 		
 
 		try {
-			@SuppressWarnings("resource")
 			BufferedReader br1 = new BufferedReader(new FileReader("src/bd_personas.csv"));
 			Linea = br1.readLine();
 			while(Linea != null) {
@@ -88,6 +92,7 @@ public class CargarDatos {
 				Linea = br1.readLine();
 				
 			}
+			br1.close();
 		}	catch (FileNotFoundException ex) {
 			System.err.println(ex.getMessage());
 		}	catch (IOException ex) {
@@ -102,7 +107,6 @@ public class CargarDatos {
 	
 	public void CargarRespuestas() {
 		try {
-			@SuppressWarnings("resource")
 			BufferedReader br2 = new BufferedReader(new FileReader("src/bd_respuesta.csv"));
 			Linea = br2.readLine();
 			while(Linea != null) {
@@ -117,6 +121,7 @@ public class CargarDatos {
 				Linea = br2.readLine();
 				
 			}
+			br2.close();
 		}	catch (FileNotFoundException ex) {
 			System.err.println(ex.getMessage());
 		}	catch (IOException ex) {
@@ -125,11 +130,36 @@ public class CargarDatos {
 	}
 	
 	
-	public void NewRespuesta(int x,int usario, String Respuesta) {
+	public void NewRespuesta(int x,int usuario, String Respuesta) {
 		p = preguntas.get(x);
-		pers = persona.get(usario);
+		pers = persona.get(usuario);
 		p.addPersonas(pers);
 		pers.setRespuesta(x,Respuesta);
+		
+		try {
+	        String content = "\n"+
+	        		String.valueOf(x)+";"+
+	        		String.valueOf(usuario)+";"+
+	        		Respuesta;
+
+	        File file = new File("src/bd_respuesta.csv");
+
+	        // if file doesnt exists, then create it
+	        if (!file.exists())
+	            file.createNewFile();
+
+	        FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        
+	        bw.append(content);
+	    
+	        bw.close();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		
+		
 		
 	}
 	
@@ -176,6 +206,34 @@ public class CargarDatos {
 				persona.add(Plibre,persN);
 				
 				System.out.println("Ingreso con exito!!! ");
+				
+				try {
+			        String content = "\n"+ String.valueOf(Plibre)+
+			        		";"+
+			        		nombre+";"+
+			        		genero+";"+
+			        		String.valueOf(rutx)+";"+
+			        		String.valueOf(edad)+";"+
+			        		String.valueOf(numero);
+
+			        File file = new File("src/bd_personas.csv");
+
+			        // if file doesnt exists, then create it
+			        if (!file.exists())
+			            file.createNewFile();
+
+			        FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
+			        BufferedWriter bw = new BufferedWriter(fw);
+			        
+			        bw.append(content);
+			    
+			        bw.close();
+
+			    } catch (IOException e) {
+			        e.printStackTrace();
+			    }
+				
+				Plibre ++;
 			}	
 		return Plibre;
 		
@@ -194,6 +252,31 @@ public class CargarDatos {
 		p.setDescripcion(Descripcion);
 		
 		preguntas.add(Plibre_Pregunta,p);
+		
+		try {
+	        String content = "\n"+ String.valueOf(Plibre_Pregunta)+
+	        		";"+
+	        		String.valueOf(Usuario)+
+	        		";"+
+	        		Descripcion;
+
+	        File file = new File("src/bd_preguntas.csv");
+
+	        // if file doesnt exists, then create it
+	        if (!file.exists())
+	            file.createNewFile();
+
+	        FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        
+	        bw.append(content);
+	    
+	        bw.close();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	
 		
 		
 		
@@ -216,7 +299,7 @@ public class CargarDatos {
 			
 			}
 		
-		System.out.println("Ingrese su pregunta: ");
+		System.out.println("Ingrese la opcion a responder: ");
 		int Opcion = Integer.parseInt(Lector.readLine());
 		
 		
