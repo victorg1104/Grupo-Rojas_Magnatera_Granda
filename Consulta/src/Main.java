@@ -6,7 +6,7 @@ public class Main {
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// inicio de Lector 
-				BufferedReader Lector = new BufferedReader(new InputStreamReader(System.in));
+				BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
 				
 				// Variables globales
 				
@@ -17,17 +17,17 @@ public class Main {
 				// Pregunta - Persona - Respuestas.
 				
 				
-				int  Plibre = 0,Plibre_Pregunta = 0, opcion;
+				int  Plibre = 0, PlibreConsulta = 0, opcion;
 			
-				CargarDatos Datos = new CargarDatos();
+				CargarDatos datos = new CargarDatos();
 				
-				Plibre_Pregunta = Datos.CargarPreguntas(Plibre_Pregunta);
+				PlibreConsulta = datos.cargarConsultas(PlibreConsulta);
 				
-				Plibre = Datos.CargarPersonas(Plibre);
+				Plibre = datos.cargarPersonas(Plibre);
 				
-				Datos.CargarRespuestas();
+				datos.cargarRespuestas();
 				
-				System.out.println("Datos listo");
+				System.out.println("Datos cargados");
 				System.out.println("--------------------------------------------------");
 				
 				// Inicio Del Programa.
@@ -38,13 +38,13 @@ public class Main {
 				// Se verifica si el Rut Existe
 				int rutx = 0;
 				
-				rutx = Integer.parseInt(Lector.readLine());
+				rutx = Integer.parseInt(lector.readLine());
 				
 				//Si Existe 
 				
-				int Usuario = Datos.InicioSesion(rutx, Plibre);
-				
-				if(Plibre < Usuario) { 
+				int usuario = datos.inicioSesion(rutx, Plibre);
+				System.out.println(usuario);
+				if(Plibre < usuario) { 
 					Plibre ++;
 				}	
 				
@@ -60,60 +60,47 @@ public class Main {
 					System.out.println("1. Crear Pregunta\n"
 							+ "2. Mostrar Preguntas a responder\n"
 							+ "3. Listar respuestas\n"
-							+ "4. Tus preguntas\n"
+							+ "4. Listar Tus preguntas creadas\n"
 							+ "5. Salir");
 					
 					System.out.println("Ingrese su opcion: ");
-					opcion = Integer.parseInt(Lector.readLine());
+					opcion = Integer.parseInt(lector.readLine());
 
 					
 					switch(opcion) {
 					case 1:
 						
-						
-						Plibre_Pregunta = Datos.agregar_newpregunta(Plibre_Pregunta, Usuario);
-						
-						
+						PlibreConsulta = datos.agregarNewConsulta(PlibreConsulta, usuario-1);
 						break;
 						
 					case 2:
+						
 						int x = 0;
-						x = Datos.Listar_pregunta(Plibre_Pregunta, Usuario);
+						x = datos.listarConsultas(PlibreConsulta, usuario-1);
 						System.out.println("Ingrese su respuesta: ");
-						String Respuesta = Lector.readLine();
-						Datos.NewRespuesta(x,Usuario,Respuesta);
+						String Respuesta = lector.readLine();
+						datos.newRespuesta(x,usuario-1,Respuesta);
 						break;
-						
-						
-						
+
 					case 3:
 						
-						Datos.Listar_Respuesta(Plibre_Pregunta, Usuario);
+						datos.listarRespuestas(PlibreConsulta, usuario-1);
 						break;
 					
 						
 					case 4:
-						Datos.Listar_Tus_Pregunta(Plibre_Pregunta,Usuario);
+						
+						datos.listarTusConsultas(PlibreConsulta,usuario-1);
 						break;
 						
-										
-						
 					case 5:
+						
 						System.out.println("Su sesion se cerro.!!!");
 						flag = false;
 						
-					
 					}
 					 
-					}
-				
-					
-					
-			
-				
-
-		
-
+				}
 	}
 
 }

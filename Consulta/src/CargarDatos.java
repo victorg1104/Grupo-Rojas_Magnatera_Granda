@@ -9,87 +9,67 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class CargarDatos {
-	ArrayList<Pregunta> preguntas = new ArrayList<Pregunta>();
+	ArrayList<Consulta> consultas = new ArrayList<Consulta>();
 	ArrayList<Persona> persona  = new ArrayList<Persona>();
 	Persona pers = new Persona();
-	String  Linea;
+	String  linea;
 	int i;
-	Pregunta p = new Pregunta();
-	
-	
-	
-	
-	
-	
+	Consulta c = new Consulta();
 	
 	public CargarDatos(){
-		
-		
-		
-		
+	
 	}
-	
-	
 	//Constructor 
 	//Cargar Personas del csv
-	public int CargarPreguntas(int Plibre_Pregunta){
-		String  Linea;
+	public int cargarConsultas(int PlibreConsulta){
+		String  linea;
 			try {
-				BufferedReader br = new BufferedReader(new FileReader("src/bd_preguntas.csv"));
-				Linea = br.readLine();
-				while(Linea != null) {
-					Pregunta p1 = new Pregunta();
+				BufferedReader br = new BufferedReader(new FileReader("src/bd_consultas.csv"));
+				linea = br.readLine();
+				while(linea != null) {
+					Consulta c1 = new Consulta();
 					// constructor				
-					String datos[] = Linea.split(";");
-					p1.setIdPregunta(Integer.parseInt(datos[0]));
-					p1.setIdCreador(Integer.parseInt(datos[1]));
-					p1.setDescripcion(datos[2]);
-					preguntas.add(Plibre_Pregunta,p1);
-					Plibre_Pregunta ++;
+					String datos[] = linea.split(";");
+					c1.setIdConsulta(Integer.parseInt(datos[0]));
+					c1.setIdCreador(Integer.parseInt(datos[1]));
+					c1.setDescripcion(datos[2]);
+					consultas.add(PlibreConsulta, c1);
+					PlibreConsulta ++;
 					// lee la siguiente linea
-					Linea = br.readLine();
+					linea = br.readLine();
 					}
 				br.close();
 			}	catch (FileNotFoundException ex) {
 					System.err.println(ex.getMessage());
 			}	catch (IOException ex) {
 				System.err.println(ex.getMessage());
-			}
-			
-			
-			
-				
-		return Plibre_Pregunta;
-		
-		
-		
+			}	
+			System.out.println(PlibreConsulta);
+		return PlibreConsulta;	
 	}
 	
 	//Constructor 
 	//Cargar Personas del csv
 	
-	public int CargarPersonas(int Plibre) {
-		
-		
-
+	public int cargarPersonas(int Plibre) {
 		try {
 			BufferedReader br1 = new BufferedReader(new FileReader("src/bd_personas.csv"));
-			Linea = br1.readLine();
-			while(Linea != null) {
-				String datos[] = Linea.split(";");
+			linea = br1.readLine();
+			while(linea != null) {
+				String datos[] = linea.split(";");
 				
 					Persona pers1 = new Persona();
-					pers1.SetId(Integer.parseInt(datos[0]));
-					pers1.SetRut(Integer.parseInt(datos[1]));
-					pers1.SetNombre(datos[2]);
-					pers1.SetGenero(datos[3]);
-					pers1.SetEdad(Integer.parseInt(datos[4]));
-					pers1.SetNumero(Integer.parseInt(datos[5]));
+					pers1.setId(Integer.parseInt(datos[0]));
+					pers1.setRut(Integer.parseInt(datos[1]));
+					pers1.setNombre(datos[2]);
+					pers1.setGenero(datos[3]);
+					pers1.setEdad(Integer.parseInt(datos[4]));
+					pers1.setNumero(Integer.parseInt(datos[5]));
 					
 					persona.add(Plibre,pers1);
 					
 					Plibre ++;
-				Linea = br1.readLine();
+				linea = br1.readLine();
 				
 			}
 			br1.close();
@@ -98,28 +78,25 @@ public class CargarDatos {
 		}	catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-		
-		
-		return Plibre;
-		
+		System.out.println(Plibre);
+		return Plibre;		
 	}
 	
 	
-	public void CargarRespuestas() {
+	public void cargarRespuestas() {
 		try {
 			BufferedReader br2 = new BufferedReader(new FileReader("src/bd_respuesta.csv"));
-			Linea = br2.readLine();
-			while(Linea != null) {
-				String datos[] = Linea.split(";");
+			linea = br2.readLine();
+			while(linea != null) {
+				String datos[] = linea.split(";");
 				//
-				p = preguntas.get(Integer.parseInt(datos[0]));
+				c = consultas.get(Integer.parseInt(datos[0]));
 				pers = persona.get(Integer.parseInt(datos[1]));
 				
-				p.addPersonas(pers);
+				c.addPersonas(pers);
 				
 				pers.setRespuesta(Integer.parseInt(datos[0]), datos[2]);
-				Linea = br2.readLine();
-				
+				linea = br2.readLine();
 			}
 			br2.close();
 		}	catch (FileNotFoundException ex) {
@@ -130,17 +107,17 @@ public class CargarDatos {
 	}
 	
 	
-	public void NewRespuesta(int x,int usuario, String Respuesta) {
-		p = preguntas.get(x);
+	public void newRespuesta(int x,int usuario, String respuesta) {
+		c = consultas.get(x);
 		pers = persona.get(usuario);
-		p.addPersonas(pers);
-		pers.setRespuesta(x,Respuesta);
+		c.addPersonas(pers);
+		pers.setRespuesta(x,respuesta);
 		
 		try {
 	        String content = "\n"+
 	        		String.valueOf(x)+";"+
 	        		String.valueOf(usuario)+";"+
-	        		Respuesta;
+	        		respuesta;
 
 	        File file = new File("src/bd_respuesta.csv");
 
@@ -158,51 +135,45 @@ public class CargarDatos {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
-		
-		
-		
 	}
 	
 	
-	public int InicioSesion(int rutx, int Plibre) throws IOException{
+	public int inicioSesion(int rutx, int Plibre) throws IOException{
 		
 		boolean flag = true;
-		BufferedReader Lector = new BufferedReader(new InputStreamReader(System.in));
-		
-	
+		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+
 		// verifica si existe el Usuario
 		for(i = 0; i < Plibre; i++) {
 			pers = persona.get(i);
-			if(rutx == pers.GetRut()) {
-				Plibre = pers.GetId();
-				System.out.println("Hola " + pers.GetNombre()+ "\n");
+			if(rutx == pers.getRut()) {
+				Plibre = pers.getId();
+				System.out.println("Hola " + pers.getNombre()+ "\n");
 			flag = false;
 			}
-			
-			
 		}
 			if(flag) {
 				Persona persN = new Persona();
 				String nombre, genero;
 				int edad, numero;
 				System.out.println("Su rut no esta registrado, se creara un usuario nuevo: ");
-				persN.SetId(Plibre);
+				persN.setId(Plibre);
 				System.out.println("Ingrese su Nombre: ");
-				nombre = Lector.readLine();
-				persN.SetNombre(nombre);
+				nombre = lector.readLine();
+				persN.setNombre(nombre);
 				
 				System.out.println("Ingrese su genero: ");
-				genero = Lector.readLine();
-				persN.SetGenero(genero);
-				persN.SetRut(rutx);
+				genero = lector.readLine();
+				persN.setGenero(genero);
+				persN.setRut(rutx);
 				
 				System.out.println("Ingrese su edad: ");
-				edad = Integer.parseInt(Lector.readLine());
-				persN.SetEdad(edad);
+				edad = Integer.parseInt(lector.readLine());
+				persN.setEdad(edad);
 				
 				System.out.println("Ingrese su numero telefonico (9 digito): ");
-				numero = Integer.parseInt(Lector.readLine());
-				persN.SetNumero(numero);
+				numero = Integer.parseInt(lector.readLine());
+				persN.setNumero(numero);
 				persona.add(Plibre,persN);
 				
 				System.out.println("Ingreso con exito!!! ");
@@ -210,9 +181,9 @@ public class CargarDatos {
 				try {
 			        String content = "\n"+ String.valueOf(Plibre)+
 			        		";"+
+			        		String.valueOf(rutx)+";"+
 			        		nombre+";"+
 			        		genero+";"+
-			        		String.valueOf(rutx)+";"+
 			        		String.valueOf(edad)+";"+
 			        		String.valueOf(numero);
 
@@ -235,32 +206,30 @@ public class CargarDatos {
 				
 				Plibre ++;
 			}	
+			
 		return Plibre;
-		
-		
-		
 	}
 	
 	
-	public int  agregar_newpregunta(int Plibre_Pregunta, int Usuario) throws IOException {
-		BufferedReader Lector = new BufferedReader(new InputStreamReader(System.in));
-		Pregunta p = new Pregunta();
-		p.setIdPregunta(Plibre_Pregunta);
-		p.setIdCreador(Usuario);
-		System.out.println("Ingrese su pregunta: ");
-		String Descripcion = Lector.readLine();
-		p.setDescripcion(Descripcion);
+	public int  agregarNewConsulta(int PlibreConsulta, int usuario) throws IOException {
+		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+		Consulta c = new Consulta();
+		c.setIdConsulta(PlibreConsulta);
+		c.setIdCreador(usuario);
+		System.out.println("Ingrese su consulta: ");
+		String descripcion = lector.readLine();
+		c.setDescripcion(descripcion);
 		
-		preguntas.add(Plibre_Pregunta,p);
+		consultas.add(PlibreConsulta,c);
 		
 		try {
-	        String content = "\n"+ String.valueOf(Plibre_Pregunta)+
+	        String content = "\n"+ String.valueOf(PlibreConsulta)+
 	        		";"+
-	        		String.valueOf(Usuario)+
+	        		String.valueOf(usuario)+
 	        		";"+
-	        		Descripcion;
+	        		descripcion;
 
-	        File file = new File("src/bd_preguntas.csv");
+	        File file = new File("src/bd_consultas.csv");
 
 	        // if file doesnt exists, then create it
 	        if (!file.exists())
@@ -276,89 +245,59 @@ public class CargarDatos {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
-	
 		
+		PlibreConsulta++;
 		
-		
-		Plibre_Pregunta ++;
-		
-		return Plibre_Pregunta;
+		return PlibreConsulta;
 	}
 	
 	
-	public int Listar_pregunta(int Plibre_Pregunta,int Usuario) throws IOException {
+	public int listarConsultas(int PlibreConsulta,int usuario) throws IOException {
 		
-		BufferedReader Lector = new BufferedReader(new InputStreamReader(System.in));
-		for(int i = 0; i < Plibre_Pregunta; i++ ) {
-			p = preguntas.get(i);			
-			pers = persona.get(Usuario);
-			//boolean flag_x = noContiene(Usuario);
-			if(pers.getRespuesta(p.getIdPregunta()) == null) {
-				System.out.println(String.valueOf(i)+") "+p.getDescripcion());
+		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+		for(int i = 0; i < PlibreConsulta; i++ ) {
+			c = consultas.get(i);			
+			pers = persona.get(usuario);
+
+			if(pers.getRespuesta(c.getIdConsulta()) == null) {
+				System.out.println(String.valueOf(i)+") " + c.getDescripcion());
 			}
-			
 			}
 		
-		System.out.println("Ingrese la opcion a responder: ");
-		int Opcion = Integer.parseInt(Lector.readLine());
-		
+		System.out.println("Ingrese id de consulta a responder: ");
+		int Opcion = Integer.parseInt(lector.readLine());
 		
 		return Opcion;
-		
-		
-		
 	}
 	
 	
-public void Listar_Respuesta(int Plibre_Pregunta,int Usuario){
+	public void listarRespuestas(int PlibreConsulta,int usuario){
 		
-		for(int i = 0; i < Plibre_Pregunta; i++ ) {
-			p = preguntas.get(i);			
-			pers = persona.get(Usuario);
-			//boolean flag_x = noContiene(Usuario);
-			if(pers.getRespuesta(p.getIdPregunta()) != null) {
-				System.out.println(String.valueOf(i)+") "+p.getDescripcion());
-				System.out.println(pers.getRespuesta(p.getIdPregunta()));
-			}
-			
-			}
+		for(int i = 0; i < PlibreConsulta; i++ ) {
+			c = consultas.get(i);			
+			pers = persona.get(usuario);
 
-		
-		
-		return;
-		
-		
-		
+			if(pers.getRespuesta(c.getIdConsulta()) != null) {
+				System.out.println(String.valueOf(i)+") " + c.getDescripcion());
+				System.out.println(pers.getRespuesta(c.getIdConsulta()));
+				}
+			}
 	}
 
-public void Listar_Tus_Pregunta(int Plibre_Pregunta,int Usuario) throws IOException {
+	public void listarTusConsultas(int PlibreConsulta,int usuario) throws IOException {
 	boolean flag=true;
-	for(int i = 0; i < Plibre_Pregunta; i++ ) {
-		p = preguntas.get(i);			
-		pers = persona.get(Usuario);
-		if(Usuario == p.getIdCreador()) {
-			System.out.println(p.getDescripcion()+"\n");
-			flag=false;
-			
-		}
-		
+	for(int i = 0; i < PlibreConsulta; i++ ) {
+		c = consultas.get(i);			
+		pers = persona.get(usuario);
+		if(usuario == c.getIdCreador()) {
+			System.out.println(c.getDescripcion()+"\n");
+			flag=false;	
+			}
 		}
 	
 	if(flag) {
-		System.out.println("Uds no creo aun una pregunta....\n");
+		System.out.println("Usted no creo aun una pregunta....\n");
+		}
 	}
-	
-	
-	
-}
 
-
-	
-	
-	
-	
-	
-	
-	
-	
 }

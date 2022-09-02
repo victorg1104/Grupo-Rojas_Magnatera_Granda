@@ -1,67 +1,63 @@
 import java.util.ArrayList;
 
-public class Pregunta {
+public class Consulta {
 	// Declaracion de atributos
 	private int idPregunta, idCreador;
-	private String Descripcion;
+	private String descripcion;
 	private ArrayList<Persona> personas;
-	
-	//Constructor
-	public Pregunta() {
-		
+
+	// Constructor
+	public Consulta() {
+
 		idPregunta = 0;
 		idCreador = 0;
-		Descripcion = "";
+		descripcion = "";
 		personas = new ArrayList<Persona>();
-		
+
 	}
-	
+
 	//
 	public void addPersonas(Persona personaX) {
 		Persona perso = new Persona();
 		boolean flag = true;
-		for(int i = 0; i < personas.size(); i++) {
-			
+		for (int i = 0; i < personas.size(); i++) {
 			perso = personas.get(i);
-			if(personaX.GetId() == perso.GetId()) {
+			if (personaX.getId() == perso.getId()) {
 				flag = false;
 			}
 		}
-		
-		if(flag) {
+		if (flag) {
 			personas.add(personaX);
 		}
-		
 	}
-	
+
 	public ArrayList<Persona> getPersonas() {
 		return personas;
 	}
-	
-	
-	
+
 	// Getter y Setter
-	
-	
-	
-	
-	public int getIdPregunta() {
+
+	public int getIdConsulta() {
 		return idPregunta;
 	}
 
-	public void setIdPregunta(int idPregunta) {
+	public void setIdConsulta(int idPregunta) {
 		this.idPregunta = idPregunta;
 	}
+
 	public int getIdCreador() {
 		return idCreador;
 	}
+
 	public void setIdCreador(int idCreador) {
 		this.idCreador = idCreador;
 	}
+
 	public String getDescripcion() {
-		return Descripcion;
+		return descripcion;
 	}
+
 	public void setDescripcion(String descripcion) {
-		Descripcion = descripcion;
-	}	
+		this.descripcion = descripcion;
+	}
 }

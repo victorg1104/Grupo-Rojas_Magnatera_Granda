@@ -1,14 +1,14 @@
 
 public class Respuesta {
-	private int idRespuesta, idPregunta, idPersona;
-	private String Respuesta_pregunta;
+	private int idRespuesta, idConsulta, idPersona;
+	private String respuestaConsulta;
 	
 	//Constructor
 	public Respuesta() {
 		
-		idPregunta = 0;
+		idConsulta = 0;
 		idPersona = 0;
-		Respuesta_pregunta = "";
+		respuestaConsulta = "";
 	}
 
 	public int getIdRespuesta() {
@@ -19,12 +19,12 @@ public class Respuesta {
 		this.idRespuesta = idRespuesta;
 	}
 
-	public int getIdPregunta() {
-		return idPregunta;
+	public int getIdConsulta() {
+		return idConsulta;
 	}
 
-	public void setIdPregunta(int idPregunta) {
-		this.idPregunta = idPregunta;
+	public void setIdPregunta(int idConsulta) {
+		this.idConsulta = idConsulta;
 	}
 
 	public int getIdPersona() {
@@ -35,12 +35,12 @@ public class Respuesta {
 		this.idPersona = idPersona;
 	}
 
-	public String getRespuesta_pregunta() {
-		return Respuesta_pregunta;
+	public String getrespuestaConsulta() {
+		return respuestaConsulta;
 	}
 
-	public void setRespuesta_pregunta(String respuesta_pregunta) {
-		Respuesta_pregunta = respuesta_pregunta;
+	public void setRespuesta_pregunta(String respuestaConsulta) {
+		this.respuestaConsulta = respuestaConsulta;
 	}
 	
 	

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Persona {
     // Declaracion de atributos
-    private String Nombre, Genero;
+    private String nombre, genero;
     private int id, rut, edad, numero;
     private HashMap<Integer,String> respuestas;
 
@@ -13,18 +13,14 @@ public class Persona {
     public Persona(){
     	id = 0;
         rut = 0;
-    	Nombre = "";
-        Genero = "";
+    	nombre = "";
+        genero = "";
         edad = 0;
         numero = 0;
         // keys = Id_pregunta : "respuesta"
         respuestas = new HashMap<Integer, String>();
         
     }
-    
- 
-    
-    
     // Getter y Setter
     
     public void setRespuesta(int id_pregunta,String respuesta) {
@@ -37,51 +33,51 @@ public class Persona {
     	
     }
 	
-    public int GetId() {
+    public int getId() {
         return id;
     }
 
-    public void SetId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String GetNombre() {
-        return Nombre;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void SetNombre(String nombre) {
-        this.Nombre = nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String GetGenero() {
-        return Genero;
+    public String getGenero() {
+        return genero;
     }
 
-    public void SetGenero(String Genero) {
-        this.Genero = Genero;
+    public void setGenero(String Genero) {
+        this.genero = Genero;
     }
 
-    public int GetRut() {
+    public int getRut() {
         return rut;
     }
 
-    public void SetRut(int rut) {
+    public void setRut(int rut) {
         this.rut = rut;
     }
 
-    public int GetEdad() {
+    public int getEdad() {
         return edad;
     }
 
-    public void SetEdad(int edad) {
+    public void setEdad(int edad) {
         this.edad = edad;
     }
 
-    public int GetNumero() {
+    public int getNumero() {
         return numero;
     }
 
-    public void SetNumero(int numero) {
+    public void setNumero(int numero) {
         this.numero = numero;
     }
 
