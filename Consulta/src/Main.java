@@ -37,13 +37,20 @@ public class Main {
 				
 				// Se verifica si el Rut Existe
 				int rutx = 0;
+				boolean flag = true;
 				
 				rutx = Integer.parseInt(lector.readLine());
-				
+				 
+				int usuario = 0;
 				//Si Existe 
+				try {
+					usuario = datos.inicioSesion(rutx, Plibre);
+				}
+				catch(RutInvalidoException r) {
+					r.printStackTrace();
+					return;
+				}				
 				
-				int usuario = datos.inicioSesion(rutx, Plibre);
-
 				if(Plibre == usuario) { 
 					Plibre ++;
 				}	
@@ -51,9 +58,6 @@ public class Main {
 				System.out.println("----------------------------------------------------");
 				
 				// Sub Menu 
-				boolean flag = true;
-				
-				
 				while(flag) {
 					
 					// Agregar funcion Eliminar y editar las respuesta.

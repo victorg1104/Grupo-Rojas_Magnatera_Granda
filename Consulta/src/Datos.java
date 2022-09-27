@@ -115,11 +115,14 @@ public class Datos {
 	}
 	
 	
-	public int inicioSesion(int rutx, int Plibre) throws IOException{
-		
+	public int inicioSesion(int rutx, int Plibre) throws RutInvalidoException, IOException{
 		boolean flag = true;
 		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
-
+		
+		if(rutx < 9999999){
+			throw new RutInvalidoException();
+		}
+		
 		// verifica si existe el Usuario
 		for(i = 0; i < Plibre; i++) {
 			pers = persona.get(i);
