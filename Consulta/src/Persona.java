@@ -130,5 +130,4 @@ public class Persona {
     public void setNumero(int numero) {
         this.numero = numero;
     }
-
 }

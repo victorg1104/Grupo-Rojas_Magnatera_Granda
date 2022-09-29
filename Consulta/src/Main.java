@@ -44,12 +44,20 @@ public class Main {
 				int usuario = 0;
 				//Si Existe 
 				try {
-					usuario = datos.inicioSesion(rutx, Plibre);
+					datos.inicioSesion(rutx);
 				}
 				catch(RutInvalidoException r) {
-					r.printStackTrace();
-					return;
-				}				
+					flag = false;
+					while(!flag) {
+						r.mostrarMensajeError();
+						rutx = Integer.parseInt(lector.readLine());
+						
+						if (rutx > 9999999) flag = true;
+					}
+				}
+				finally {
+					usuario = datos.inicioSesion(rutx, Plibre);
+				}
 				
 				if(Plibre == usuario) { 
 					Plibre ++;

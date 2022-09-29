@@ -22,7 +22,6 @@ public class Datos {
 	//Constructor 
 	//Cargar Personas del csv
 	public int cargarConsultas(int PlibreConsulta){
-		String  linea;
 			try {
 				BufferedReader br = new BufferedReader(new FileReader("src/bd_consultas.csv"));
 				linea = br.readLine();
@@ -114,14 +113,15 @@ public class Datos {
 		pers.newRespuesta(x, respuesta);
 	}
 	
-	
-	public int inicioSesion(int rutx, int Plibre) throws RutInvalidoException, IOException{
-		boolean flag = true;
-		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
-		
+	public void inicioSesion(int rutx) throws RutInvalidoException{
 		if(rutx < 9999999){
 			throw new RutInvalidoException();
 		}
+	}
+	
+	public int inicioSesion(int rutx, int Plibre) throws IOException{
+		boolean flag = true;
+		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
 		
 		// verifica si existe el Usuario
 		for(i = 0; i < Plibre; i++) {
@@ -245,8 +245,11 @@ public class Datos {
 		}
 	}
 	
-	public void listarRespuestas(int PlibreConsulta,int usuario, boolean respuesta){
+	public void listarRespuestas(int PlibreConsulta,int usuario, boolean respuesta) throws IOException{
 		pers = persona.get(usuario);
+		int opcion1 = 0;
+		boolean flag = true;
+		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
 		
 		for(int i = 0; i < PlibreConsulta; i++ ) {
 			c = consultas.get(i);			
@@ -256,7 +259,123 @@ public class Datos {
 		if(respuesta == false) {
 			System.out.println("Usted no ha respondido ninguna consulta\n");
 		}
+		else {
+			System.out.println("¿Desea realizar alguna acción con sus respuestas?");
+			System.out.println("1-Editar respuesta // 2-Eliminar respuesta // 3-Volver al menú principal");
+			
+			opcion1 = Integer.parseInt(lector.readLine());
+			
+			switch (opcion1){
+				case 1:
+					while(flag) {
+						String numRes;
+						System.out.println("Ingrese número de respuesta a editar:");
+						numRes = lector.readLine();
+						flag = editarRespuesta(numRes, String.valueOf(pers.getId()));
+					}
+					break;
+				case 2:
+					while(flag) {
+						String numRes;
+						System.out.println("Ingrese número de respuesta a eliminar:");
+						numRes = lector.readLine();
+						flag = eliminarRespuesta(numRes, String.valueOf(pers.getId()));
+					}
+					break;
+				
+				case 3:
+					break;
+			}
+		}
+	}
+	
+	public boolean editarRespuesta(String numRes, String idPersona) {
+		boolean flag = true;
+		String [] lineas = new String[10];
+		int cont = 0;
+		
+		try {
+			BufferedReader br2 = new BufferedReader(new FileReader("src/bd_respuesta.csv"));
+			linea = br2.readLine();
+
+			while(linea != null) {
+				String datos[] = linea.split(";");
+				BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+				//
+				if((datos[0].equals(numRes) && datos[1].equals(idPersona))) {
+					
+					String res;
+					
+					System.out.println("Ingrese nueva respuesta:");
+					
+					res = lector.readLine();
+					
+					linea = datos[0] + ";" + datos[1] + ";" + res;
+					System.out.println(linea);
+					lineas[cont] = linea;
+					
+					flag = false;
+				}
+				else {
+					lineas[cont] = linea;
+				}
+				linea = br2.readLine();
+				
+				cont++;
+			}
+			BufferedWriter editor = new BufferedWriter(new FileWriter("src/bd_respuesta.csv"));
+			
+			for (int i  = 0; i < cont; i++) {
+				if(i != cont - 1) editor.append(lineas[i] + "\n");
+				else editor.append(lineas[i]);
+			}
+			br2.close();
+			editor.close();
+		}	catch (FileNotFoundException ex) {
+			System.err.println(ex.getMessage());
+		}	catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		
+		return flag;
 	}
 
+	public boolean eliminarRespuesta(String numRes, String idPersona) {
+		boolean flag = true;
+		String [] lineas = new String[10];
+		int cont = 0;
+		
+		try {
+			BufferedReader br2 = new BufferedReader(new FileReader("src/bd_respuesta.csv"));
+			linea = br2.readLine();
 
+			while(linea != null) {
+				String datos[] = linea.split(";");
+				//
+				if((datos[0].equals(numRes) && datos[1].equals(idPersona))) {
+					flag = false;
+				}
+				else {
+					lineas[cont] = linea;
+					cont++;
+				}
+				
+				linea = br2.readLine();
+			}
+			BufferedWriter editor = new BufferedWriter(new FileWriter("src/bd_respuesta.csv"));
+			
+			for (int i  = 0; i < cont; i++) {
+				if(i != cont - 1) editor.append(lineas[i] + "\n");
+				else editor.append(lineas[i]);
+			}
+			br2.close();
+			editor.close();
+		}	catch (FileNotFoundException ex) {
+			System.err.println(ex.getMessage());
+		}	catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		
+		return flag;
+	}
 }
