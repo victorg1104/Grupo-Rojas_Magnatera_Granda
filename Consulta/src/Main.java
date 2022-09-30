@@ -27,10 +27,14 @@ public class Main {
 				
 				datos.cargarRespuestas();
 				
+				
 				System.out.println("Datos cargados");
 				System.out.println("--------------------------------------------------");
 				
 				// Inicio Del Programa.
+				
+				VentanaInicioSesion window = new VentanaInicioSesion();
+				
 				System.out.println("----------------------------------------------------");
 				System.out.println("Bienvenido a Planificación de consultas ciudadanas ");
 				System.out.println("Ingrese su Rut sin puntos ni guión: \n");
@@ -39,7 +43,8 @@ public class Main {
 				int rutx = 0;
 				boolean flag = true;
 				
-				rutx = Integer.parseInt(lector.readLine());
+				
+				rutx = window.;
 				 
 				int usuario = 0;
 				//Si Existe 
