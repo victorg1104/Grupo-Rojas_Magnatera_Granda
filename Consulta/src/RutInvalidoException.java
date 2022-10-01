@@ -3,7 +3,7 @@ public class RutInvalidoException extends Exception{
 		super("El rut ingresado no es válido");
 	}
 	
-	public void mostrarMensajeError() {
-		System.out.println("Rut inválido, intente nuevamente: ");
+	public String mostrarMensajeError() {
+		return "Rut inválido, intente nuevamente: ";
 	}
 }

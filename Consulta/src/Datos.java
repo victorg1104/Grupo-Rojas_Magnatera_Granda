@@ -9,18 +9,37 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Datos {
-	private ArrayList<Consulta> consultas = new ArrayList<Consulta>();
-	private ArrayList<Persona> persona  = new ArrayList<Persona>();
-	private Persona pers = new Persona();
+	private ArrayList<Consulta> consultas;
+	private ArrayList<Persona> persona;
+	private Persona pers;
 	private String  linea;
-	private int i;
-	private Consulta c = new Consulta();
+	private int i, rutx, opcion, usuario;
+	public int Plibre, PlibreConsulta;
+	private Consulta c;
+	private boolean flag;
 	
 	public Datos(){
-	
+		c = new Consulta();
+		pers = new Persona();
+		persona  = new ArrayList<Persona>();
+		consultas = new ArrayList<Consulta>();
+		PlibreConsulta = cargarConsultas(0);
+		Plibre = cargarPersonas(0);
+		usuario = 0;
+		flag = true;
+		cargarRespuestas();
 	}
-	//Constructor 
-	//Cargar Personas del csv
+	
+	public boolean getFlag() {
+		return flag;
+	}
+	
+	public void setUsuario(int usuario) {
+		this.usuario = usuario;
+	}
+	
+	//Cargar Consultas del csv
+	
 	public int cargarConsultas(int PlibreConsulta){
 			try {
 				BufferedReader br = new BufferedReader(new FileReader("src/bd_consultas.csv"));
@@ -47,7 +66,6 @@ public class Datos {
 		return PlibreConsulta;	
 	}
 	
-	//Constructor 
 	//Cargar Personas del csv
 	
 	public int cargarPersonas(int Plibre) {
@@ -113,81 +131,74 @@ public class Datos {
 		pers.newRespuesta(x, respuesta);
 	}
 	
-	public void inicioSesion(int rutx) throws RutInvalidoException{
-		if(rutx < 9999999){
+	public boolean inicioSesion() throws RutInvalidoException{
+		rutx = Integer.parseInt(VentanaInicioSesion.campoRut.getText());
+		if( rutx < 9999999){
 			throw new RutInvalidoException();
 		}
+		else return true;
 	}
 	
-	public int inicioSesion(int rutx, int Plibre) throws IOException{
-		boolean flag = true;
-		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
-		
+	public int inicioSesion(int rutx, int Plibre){		
 		// verifica si existe el Usuario
 		for(i = 0; i < Plibre; i++) {
 			pers = persona.get(i);
 			if(rutx == pers.getRut()) {
 				Plibre = pers.getId();
-				System.out.println("Hola " + pers.getNombre()+ "\n");
-			flag = false;
+				return Plibre;
 			}
 		}
-			if(flag) {
-				Persona persN = new Persona();
-				String nombre, genero;
-				int edad, numero;
-				System.out.println("Su rut no esta registrado, se creara un usuario nuevo: ");
-				persN.setId(Plibre);
-				System.out.println("Ingrese su Nombre: ");
-				nombre = lector.readLine();
-				persN.setNombre(nombre);
-				
-				System.out.println("Ingrese su genero: ");
-				genero = lector.readLine();
-				persN.setGenero(genero);
-				persN.setRut(rutx);
-				
-				System.out.println("Ingrese su edad: ");
-				edad = Integer.parseInt(lector.readLine());
-				persN.setEdad(edad);
-				
-				System.out.println("Ingrese su numero telefonico (9 digito): ");
-				numero = Integer.parseInt(lector.readLine());
-				persN.setNumero(numero);
-				persona.add(Plibre,persN);
-				
-				System.out.println("Ingreso con exito!!! ");
-				
-				try {
-			        String content = "\n"+ String.valueOf(Plibre)+
-			        		";"+
-			        		String.valueOf(rutx)+";"+
-			        		nombre+";"+
-			        		genero+";"+
-			        		String.valueOf(edad)+";"+
-			        		String.valueOf(numero);
-
-			        File file = new File("src/bd_personas.csv");
-
-			        // if file doesnt exists, then create it
-			        if (!file.exists())
-			            file.createNewFile();
-
-			        FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
-			        BufferedWriter bw = new BufferedWriter(fw);
-			        
-			        bw.append(content);
-			    
-			        bw.close();
-
-			    } catch (IOException e) {
-			        e.printStackTrace();
-			    }
-			}	
-			
+		
 		return Plibre;
 	}
 	
+	public void crearPersona(int Id, int rut, String nombre, String genero, int edad, int numero) {
+		Persona persN = new Persona();
+		persN.setId(Id);
+		persN.setNombre(nombre);
+		persN.setGenero(genero);
+		persN.setRut(rutx);
+		persN.setEdad(edad);
+		persN.setNumero(numero);
+		
+		persona.add(Plibre-1,persN);
+		
+		try {
+	        String content = "\n"+ String.valueOf(Plibre-1)+
+	        		";"+
+	        		String.valueOf(rutx)+";"+
+	        		nombre+";"+
+	        		genero+";"+
+	        		String.valueOf(edad)+";"+
+	        		String.valueOf(numero);
+
+	        File file = new File("src/bd_personas.csv");
+
+	        // if file doesnt exists, then create it
+	        if (!file.exists())
+	            file.createNewFile();
+
+	        FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
+	        BufferedWriter bw = new BufferedWriter(fw);
+	        
+	        bw.append(content);
+	    
+	        bw.close();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+}	
+	
+	public Persona getPersona(int usuario) {
+		for(i = 0; i < Plibre; i++) {
+			Persona pers = persona.get(i);
+			if(usuario == pers.getId()) {
+				return pers;
+			}
+		}
+		return null;
+	}
 	
 	public int  newConsulta(int PlibreConsulta, int usuario) throws IOException {
 		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
