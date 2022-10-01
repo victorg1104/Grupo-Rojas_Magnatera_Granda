@@ -121,6 +121,8 @@ public class VentanaRegistro extends JFrame {
 				JOptionPane.showMessageDialog(null, "Registro exitoso");
 				
 				ventanaRegistrado = new VentanaUsuarioRegistrado(datos, datos.getPersona(datos.Plibre));
+				ventanaRegistrado.setVisible(true);
+				dispose();
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));

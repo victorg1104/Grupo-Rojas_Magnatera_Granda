@@ -25,7 +25,7 @@ public class Persona {
     // Getter y Setter
     
     public void newRespuesta(int x, String respuesta) {
-    	setRespuesta(x, respuesta);
+    	respuestas.put(x, respuesta);
 		try {
 	        String content = "\n"+
 	        		String.valueOf(x)+";"+
@@ -50,15 +50,11 @@ public class Persona {
 	    }
 	}
     
-    public boolean listar(int i, Consulta c) {
-    	boolean flag = false;
+    public int listar(Consulta c) {
     	
-    	if(getRespuesta(c.getIdConsulta()) == null) {
-			System.out.println(String.valueOf(i)+") " + c.getDescripcion());
-			flag = true;
-		}
-    	
-    	return flag;
+    	if(getRespuesta(c.getIdConsulta()) == null) return c.getIdConsulta();
+		
+    	return -1;
     }
     
     public boolean listar(int i, Consulta c, boolean respuesta) {

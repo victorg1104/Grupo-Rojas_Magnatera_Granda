@@ -124,11 +124,11 @@ public class Datos {
 	}
 	
 	
-	public void newRespuesta(int x,int usuario, String respuesta) {
-		c = consultas.get(x);
+	public void newRespuesta(int usuario) {
+		c = consultas.get(Integer.parseInt(VentanaResponderConsulta.textField.getText()));
 		pers = persona.get(usuario);
 		c.addPersonas(pers);
-		pers.newRespuesta(x, respuesta);
+		pers.newRespuesta(c.getIdConsulta(), VentanaRespuesta.campoRespuesta.getText());
 	}
 	
 	public boolean inicioSesion() throws RutInvalidoException{
@@ -200,13 +200,11 @@ public class Datos {
 		return null;
 	}
 	
-	public int  newConsulta(int PlibreConsulta, int usuario) throws IOException {
-		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+	public void  newConsulta(int usuario){
 		Consulta c = new Consulta();
 		c.setIdConsulta(PlibreConsulta);
 		c.setIdCreador(usuario);
-		System.out.println("Ingrese su consulta: ");
-		String descripcion = lector.readLine();
+		String descripcion = VentanaCrearConsulta.campoConsulta.getText();
 		c.setDescripcion(descripcion);
 		
 		consultas.add(PlibreConsulta,c);
@@ -214,46 +212,33 @@ public class Datos {
 		c.newConsulta();
 		
 		PlibreConsulta++;
-		
-		return PlibreConsulta;
 	}
 	
 	
-	public int listarConsultas(int PlibreConsulta,int usuario) throws IOException {
+	public Object[] listarConsultas(Object[] fila, int usuario, int IDcons){
 		
-		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
-		boolean flag = false;
 		pers = persona.get(usuario);
+		c = consultas.get(IDcons);
 		
-		for(int i = 0; i < PlibreConsulta; i++ ) {
-			c = consultas.get(i);			
-			flag = pers.listar(i, c);
-		}
+		fila[0] = String.valueOf(pers.listar(c));
 		
-		if(flag == false) {
-			System.out.println("Usted ha respondido todas las consultas\n");
+		if(fila[0].equals(String.valueOf(-1)) == false) {
+			fila[1] = c.getDescripcion();
+			return fila;
 		}
-		else {
-			System.out.println("Ingrese id de consulta a responder: ");
-			int Opcion = Integer.parseInt(lector.readLine());
-		
-			return Opcion;
-		}
-		return -1;
+		return null;		
 	}
 	
-	public void listarConsultas(int PlibreConsulta,int usuario, boolean flag){
-	for(int i = 0; i < PlibreConsulta; i++ ) {
-		c = consultas.get(i);			
-		if(usuario == c.getIdCreador()) {
-			System.out.println(c.getDescripcion()+"\n");
-			flag=false;	
-			}
+	public Object[] listarTusConsultas(Object[] fila,int usuario, int IDcons){
+		c = consultas.get(IDcons);
+		
+		if (usuario == c.getIdCreador()) {
+			fila[0] = String.valueOf(IDcons);
+			fila[1] = c.getDescripcion();
+			
+			return fila;
 		}
-	
-	if(flag) {
-		System.out.println("Usted no creo aun una pregunta....\n");
-		}
+		return null;
 	}
 	
 	public void listarRespuestas(int PlibreConsulta,int usuario, boolean respuesta) throws IOException{
