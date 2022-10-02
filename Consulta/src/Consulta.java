@@ -6,60 +6,48 @@ import java.util.ArrayList;
 
 public class Consulta {
 	// Declaracion de atributos
-	private int idPregunta, idCreador;
-	private String descripcion;
-	private ArrayList<Persona> personas;
+	protected int idPregunta, idCreador;
+	protected String descripcion;
 
 	// Constructor
 	public Consulta() {
-
 		idPregunta = 0;
 		idCreador = 0;
 		descripcion = "";
-		personas = new ArrayList<Persona>();
-
 	}
+	
+	public Consulta(int idPregunta, int idCreador, String descripcion) {
+        this.idPregunta = idPregunta;
+        this.idCreador = idCreador;
+        this.descripcion = descripcion;
+    }
+	
+	public void guardarEnCsv() {
+        try {
+            String content = "\n"+ String.valueOf(idPregunta)+
+                    ";"+
+                    String.valueOf(idCreador)+
+                    ";"+
+                    descripcion;
 
-	//
-	public void addPersonas(Persona personaX) {
-		Persona perso = new Persona();
-		boolean flag = true;
-		for (int i = 0; i < personas.size(); i++) {
-			perso = personas.get(i);
-			if (personaX.getId() == perso.getId()) {
-				flag = false;
-			}
-		}
-		if (flag) {
-			personas.add(personaX);
-		}
-	}
+            File file = new File("src/bd_consultas.csv");
 
-	public void newConsulta() {
-		try {
-	        String content = "\n"+ String.valueOf(idPregunta)+
-	        		";"+
-	        		String.valueOf(idCreador)+
-	        		";"+
-	        		descripcion;
+            // if file doesnt exists, then create it
+            if (!file.exists())
+                file.createNewFile();
 
-	        File file = new File("src/bd_consultas.csv");
+            FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
+            BufferedWriter bw = new BufferedWriter(fw);
 
-	        // if file doesnt exists, then create it
-	        if (!file.exists())
-	            file.createNewFile();
+            bw.append(content);
 
-	        FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
-	        BufferedWriter bw = new BufferedWriter(fw);
-	        
-	        bw.append(content);
-	    
-	        bw.close();
+            bw.close();
 
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-	}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+	
 	// Getter y Setter
 
 	public int getIdConsulta() {

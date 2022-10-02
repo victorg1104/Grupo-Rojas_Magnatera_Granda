@@ -62,7 +62,9 @@ public class VentanaUsuarioRegistrado extends JFrame {
 		JButton botonListarRespuestas = new JButton("Tus respuestas");
 		botonListarRespuestas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				VentanaTusRespuestas ventanaTusRespuestas = new VentanaTusRespuestas(datos, usuario);
+				ventanaTusRespuestas.setVisible(true);
+				dispose();
 			}
 		});
 		botonListarRespuestas.setFont(new Font("Tahoma", Font.PLAIN, 12));

@@ -120,7 +120,7 @@ public class VentanaRegistro extends JFrame {
 				
 				JOptionPane.showMessageDialog(null, "Registro exitoso");
 				
-				ventanaRegistrado = new VentanaUsuarioRegistrado(datos, datos.getPersona(datos.Plibre));
+				ventanaRegistrado = new VentanaUsuarioRegistrado(datos, datos.getPersona(datos.Plibre-1));
 				ventanaRegistrado.setVisible(true);
 				dispose();
 			}

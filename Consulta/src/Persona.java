@@ -9,7 +9,7 @@ public class Persona {
     // Declaracion de atributos
     private String nombre, genero;
     private int id, rut, edad, numero;
-    private HashMap<Integer,String> respuestas;
+    private HashMap<Integer,Respuesta> respuestas;
 
     //Constructor
     public Persona(){
@@ -20,35 +20,21 @@ public class Persona {
         edad = 0;
         numero = 0;
         // keys = Id_pregunta : "respuesta"
-        respuestas = new HashMap<Integer, String>();
+        respuestas = new HashMap<Integer, Respuesta>();
     }
     // Getter y Setter
     
     public void newRespuesta(int x, String respuesta) {
-    	respuestas.put(x, respuesta);
-		try {
-	        String content = "\n"+
-	        		String.valueOf(x)+";"+
-	        		String.valueOf(id)+";"+
-	        		respuesta;
-
-	        File file = new File("src/bd_respuesta.csv");
-
-	        // if file doesnt exists, then create it
-	        if (!file.exists())
-	            file.createNewFile();
-
-	        FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
-	        BufferedWriter bw = new BufferedWriter(fw);
-	        
-	        bw.append(content);
-	    
-	        bw.close();
-
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-	}
+        Respuesta aux = new Respuesta(x, id, respuesta);
+        respuestas.put(x, aux);
+        aux.guardarEnCsv();
+    }
+    
+    public void newRespuesta(int x) {
+        Respuesta aux = new Respuesta(x, id);
+        respuestas.put(x, aux);
+        aux.guardarEnCsv();
+    }
     
     public int listar(Consulta c) {
     	
@@ -57,22 +43,18 @@ public class Persona {
     	return -1;
     }
     
-    public boolean listar(int i, Consulta c, boolean respuesta) {
-    	if(getRespuesta(c.getIdConsulta()) != null) {
-			System.out.println(String.valueOf(i)+") " + c.getDescripcion());
-			System.out.println(getRespuesta(c.getIdConsulta()));
-			respuesta = true;
-		}
-		return respuesta;
-	}
-    
-    public void setRespuesta(int id_pregunta,String respuesta) {
-    	respuestas.put(id_pregunta,respuesta);    	
+    public int getsizeMap(Persona p) {
+    	int tam = p.respuestas.size();
+    	return tam;
     }
     
-    public String getRespuesta(int id_pregunta) {
-    	return  respuestas.get(id_pregunta);
-    	
+    public void setRespuesta(int idPregunta, int idCreador, String respuesta) {
+        Respuesta aux = new Respuesta(idPregunta, idCreador, respuesta);
+        respuestas.put(idPregunta,aux);
+    }
+    
+    public Respuesta getRespuesta(int id_pregunta) {
+    	return respuestas.get(id_pregunta);
     }
 	
     public int getId() {

@@ -56,9 +56,6 @@ public class VentanaInicioSesion extends JFrame {
 				catch(RutInvalidoException r) {
 					JOptionPane.showMessageDialog(null, r.mostrarMensajeError());
 				}
-				catch(NumberFormatException ee) {
-					JOptionPane.showMessageDialog(null, "Rut inválido, inténtelo de nuevo");
-				}
 				
 				if (flag) {
 					final int rutx = Integer.parseInt(campoRut.getText());

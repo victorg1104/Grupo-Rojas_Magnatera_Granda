@@ -107,12 +107,9 @@ public class Datos {
 			while(linea != null) {
 				String datos[] = linea.split(";");
 				//
-				c = consultas.get(Integer.parseInt(datos[0]));
 				pers = persona.get(Integer.parseInt(datos[1]));
 				
-				c.addPersonas(pers);
-				
-				pers.setRespuesta(Integer.parseInt(datos[0]), datos[2]);
+				pers.setRespuesta(Integer.parseInt(datos[0]),Integer.parseInt(datos[1]), datos[2]);
 				linea = br2.readLine();
 			}
 			br2.close();
@@ -123,12 +120,21 @@ public class Datos {
 		}
 	}
 	
+	public boolean validarConsulta() throws ConsultaInvalidaException{
+        if(Integer.parseInt(VentanaResponderConsulta.textField.getText()) < 0 || Integer.parseInt(VentanaResponderConsulta.textField.getText()) >= consultas.size()) {
+            throw new ConsultaInvalidaException();
+        }
+        else return true;
+    }
+
+    public boolean validarConsultaRepetida(Persona p) throws ConsultaInvalidaException{
+        if(p.getRespuesta(Integer.parseInt(VentanaResponderConsulta.textField.getText())) != null) throw new ConsultaInvalidaException();
+        else return true;
+    }
 	
 	public void newRespuesta(int usuario) {
-		c = consultas.get(Integer.parseInt(VentanaResponderConsulta.textField.getText()));
-		pers = persona.get(usuario);
-		c.addPersonas(pers);
-		pers.newRespuesta(c.getIdConsulta(), VentanaRespuesta.campoRespuesta.getText());
+		pers = persona.get(usuario); 
+        pers.newRespuesta(Integer.parseInt(VentanaResponderConsulta.textField.getText()), VentanaRespuesta.campoRespuesta.getText());
 	}
 	
 	public boolean inicioSesion() throws RutInvalidoException{
@@ -154,7 +160,7 @@ public class Datos {
 	
 	public void crearPersona(int Id, int rut, String nombre, String genero, int edad, int numero) {
 		Persona persN = new Persona();
-		persN.setId(Id);
+		persN.setId(Id-1);
 		persN.setNombre(nombre);
 		persN.setGenero(genero);
 		persN.setRut(rutx);
@@ -209,7 +215,7 @@ public class Datos {
 		
 		consultas.add(PlibreConsulta,c);
 		
-		c.newConsulta();
+		c.guardarEnCsv();
 		
 		PlibreConsulta++;
 	}
@@ -241,52 +247,24 @@ public class Datos {
 		return null;
 	}
 	
-	public void listarRespuestas(int PlibreConsulta,int usuario, boolean respuesta) throws IOException{
-		pers = persona.get(usuario);
-		int opcion1 = 0;
-		boolean flag = true;
-		BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
+	public Object[] listarRespuestas(Object[] fila, int idUsuario, int IDcons){
 		
-		for(int i = 0; i < PlibreConsulta; i++ ) {
-			c = consultas.get(i);			
-			respuesta = pers.listar(i, c, respuesta);
-		}
+		pers = persona.get(idUsuario);
+		c = consultas.get(IDcons);
+		Respuesta r = pers.getRespuesta(IDcons);
 		
-		if(respuesta == false) {
-			System.out.println("Usted no ha respondido ninguna consulta\n");
-		}
-		else {
-			System.out.println("¿Desea realizar alguna acción con sus respuestas?");
-			System.out.println("1-Editar respuesta // 2-Eliminar respuesta // 3-Volver al menú principal");
+		if(idUsuario == r.getIdCreador()) {
+			fila[0] = String.valueOf(IDcons);
+			fila[1] = c.getDescripcion();
+			fila[2] = r.getDescripcion();
 			
-			opcion1 = Integer.parseInt(lector.readLine());
-			
-			switch (opcion1){
-				case 1:
-					while(flag) {
-						String numRes;
-						System.out.println("Ingrese número de respuesta a editar:");
-						numRes = lector.readLine();
-						flag = editarRespuesta(numRes, String.valueOf(pers.getId()));
-					}
-					break;
-				case 2:
-					while(flag) {
-						String numRes;
-						System.out.println("Ingrese número de respuesta a eliminar:");
-						numRes = lector.readLine();
-						flag = eliminarRespuesta(numRes, String.valueOf(pers.getId()));
-					}
-					break;
-				
-				case 3:
-					break;
-			}
+			return fila;
 		}
+		return null;
 	}
+
 	
-	public boolean editarRespuesta(String numRes, String idPersona) {
-		boolean flag = true;
+	public void editarRespuesta(String idRes, String idPersona, String res) {
 		String [] lineas = new String[10];
 		int cont = 0;
 		
@@ -296,21 +274,12 @@ public class Datos {
 
 			while(linea != null) {
 				String datos[] = linea.split(";");
-				BufferedReader lector = new BufferedReader(new InputStreamReader(System.in));
-				//
-				if((datos[0].equals(numRes) && datos[1].equals(idPersona))) {
-					
-					String res;
-					
-					System.out.println("Ingrese nueva respuesta:");
-					
-					res = lector.readLine();
+				
+				if((datos[0].equals(idRes) && datos[1].equals(idPersona))) {
 					
 					linea = datos[0] + ";" + datos[1] + ";" + res;
 					System.out.println(linea);
 					lineas[cont] = linea;
-					
-					flag = false;
 				}
 				else {
 					lineas[cont] = linea;
@@ -333,7 +302,8 @@ public class Datos {
 			System.err.println(ex.getMessage());
 		}
 		
-		return flag;
+		// Eliminar del array
+		
 	}
 
 	public boolean eliminarRespuesta(String numRes, String idPersona) {
@@ -371,7 +341,6 @@ public class Datos {
 		}	catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-		
 		return flag;
 	}
 }

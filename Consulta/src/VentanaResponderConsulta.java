@@ -81,10 +81,34 @@ public class VentanaResponderConsulta extends JFrame {
 		JButton botonAceptar = new JButton("Aceptar");
 		botonAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaRespuesta ventanaRes = new VentanaRespuesta(datos, usuario);
-				ventanaRes.setVisible(true);
-				
-				dispose();
+				boolean flag1 = false, flag2 = false;
+                try {
+                    flag1 = datos.validarConsulta();
+                }
+                catch(ConsultaInvalidaException c) {
+                    JOptionPane.showMessageDialog(null, c.mostrarMensajeError());
+                }
+                catch(NumberFormatException ee) {
+                    JOptionPane.showMessageDialog(null, "El id de consulta ingresado no es válido, intente nuevamente");
+                }
+
+                try {
+                    flag2 = datos.validarConsultaRepetida(usuario);
+                }
+                catch(ConsultaInvalidaException c) {
+                    JOptionPane.showMessageDialog(null, c.mostrarMensajeRepetido());
+                }
+                catch(NumberFormatException ee) {
+                    JOptionPane.showMessageDialog(null, "El id de consulta ingresado no es válido, intente nuevamente");
+                }
+
+                if (flag1 && flag2) {
+
+                    VentanaRespuesta ventanaRes = new VentanaRespuesta(datos, usuario);
+                    ventanaRes.setVisible(true);
+
+                    dispose();
+                }
 			}
 		});
 		botonAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
