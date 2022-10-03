@@ -93,7 +93,7 @@ public class VentanaResponderConsulta extends JFrame {
                 }
 
                 try {
-                    flag2 = datos.validarConsultaRepetida(usuario);
+                    flag2 = datos.validarConsultaRepetida(usuario, textField.getText());
                 }
                 catch(ConsultaInvalidaException c) {
                     JOptionPane.showMessageDialog(null, c.mostrarMensajeRepetido());
@@ -103,8 +103,8 @@ public class VentanaResponderConsulta extends JFrame {
                 }
 
                 if (flag1 && flag2) {
-
-                    VentanaRespuesta ventanaRes = new VentanaRespuesta(datos, usuario);
+                	
+                	VentanaRespuesta ventanaRes = new VentanaRespuesta(datos, usuario, textField.getText());
                     ventanaRes.setVisible(true);
 
                     dispose();
@@ -131,7 +131,7 @@ public class VentanaResponderConsulta extends JFrame {
 	}
 	
 	public void llenarTabla() {	
-		for (int i  = 0; i < datos.PlibreConsulta; i++) {
+		for (int i = 0; i < datos.PlibreConsulta; i++) {
 			Object[] fila = new Object[2];
 			fila = datos.listarConsultas(fila, usuario.getId(), i);
 			

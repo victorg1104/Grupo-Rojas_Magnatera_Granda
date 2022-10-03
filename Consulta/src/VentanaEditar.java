@@ -2,6 +2,9 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -97,10 +100,14 @@ public class VentanaEditar extends JFrame {
 	}
 	
 	public void llenarTabla() {	
-		for (int i  = 0; i < usuario.getsizeMap(usuario) ; i++) {
+		HashMap<Integer, Respuesta> auxmap = usuario.getMap();
+        Set<Integer> keySet = auxmap.keySet();
+        ArrayList<Integer> listOfKeys  = new ArrayList<Integer>(keySet);
+        
+		for (int idRes : listOfKeys){
 			Object[] fila = new Object[3];
-			fila = datos.listarRespuestas(fila, usuario.getId(), i);
+			fila = datos.listarRespuestas(fila, usuario.getId(), idRes);
 			if (null != fila) model.addRow(fila);
 		}
-	} 
+	}
 }

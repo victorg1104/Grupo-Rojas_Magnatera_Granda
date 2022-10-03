@@ -46,8 +46,12 @@ public class VentanaCrearConsulta extends JFrame {
 				JOptionPane.showMessageDialog(null, "Consulta creada exitosamente");
 				
 				campoConsulta.setText("");
+				VentanaUsuarioRegistrado ventanaUsuarioReg = new VentanaUsuarioRegistrado(datos, usuario);
+				ventanaUsuarioReg.setVisible(true);
+				dispose();
 			}
 		});
+		
 		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnAceptar.setBounds(66, 158, 85, 21);
 		contentPane.add(btnAceptar);

@@ -15,18 +15,18 @@ public class VentanaEditarRespuesta extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtRespuesta;
-	private String idRes;
+	private String idConsulta;
 	private Persona usuario;
 	private JLabel lblNewLabel;
 
-	public VentanaEditarRespuesta(Datos datos, Persona usuario, String idRes) {
+	public VentanaEditarRespuesta(Datos datos, Persona usuario, String idConsulta) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 179);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		this.usuario = usuario;
-		this.idRes = idRes;
+		this.idConsulta = idConsulta;
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -41,8 +41,8 @@ public class VentanaEditarRespuesta extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				final VentanaUsuarioRegistrado ventanaRegistrado;
 				
-				datos.editarRespuesta(idRes, String.valueOf(usuario.getId()),txtRespuesta.getText());
-				
+				datos.editarRespuesta(idConsulta, txtRespuesta.getText(), usuario);
+				//
 				JOptionPane.showMessageDialog(null, "Respuesta editada con éxito.");
 				
 				ventanaRegistrado = new VentanaUsuarioRegistrado(datos, usuario);

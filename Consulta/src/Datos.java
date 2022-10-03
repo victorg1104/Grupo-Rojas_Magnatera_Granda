@@ -106,10 +106,8 @@ public class Datos {
 			linea = br2.readLine();
 			while(linea != null) {
 				String datos[] = linea.split(";");
-				//
-				pers = persona.get(Integer.parseInt(datos[1]));
-				
-				pers.setRespuesta(Integer.parseInt(datos[0]),Integer.parseInt(datos[1]), datos[2]);
+				pers = persona.get(Integer.parseInt(datos[2]));
+				pers.setRespuesta(Integer.parseInt(datos[0]),Integer.parseInt(datos[1]),Integer.parseInt(datos[2]), datos[3]);
 				linea = br2.readLine();
 			}
 			br2.close();
@@ -127,15 +125,21 @@ public class Datos {
         else return true;
     }
 
-    public boolean validarConsultaRepetida(Persona p) throws ConsultaInvalidaException{
-        if(p.getRespuesta(Integer.parseInt(VentanaResponderConsulta.textField.getText())) != null) throw new ConsultaInvalidaException();
+    public boolean validarConsultaRepetida(Persona p, String idConsulta) throws ConsultaInvalidaException{
+        if(p.buscar(Integer.parseInt(idConsulta)) == -1) throw new ConsultaInvalidaException();
         else return true;
     }
-	
-	public void newRespuesta(int usuario) {
+    
+    
+    public void newRespuesta(int usuario) {
 		pers = persona.get(usuario); 
         pers.newRespuesta(Integer.parseInt(VentanaResponderConsulta.textField.getText()), VentanaRespuesta.campoRespuesta.getText());
 	}
+		
+	public void newRespuesta(int usuario, int idConsulta, String respuesta) {
+        pers = persona.get(usuario);
+        pers.newRespuesta(idConsulta, respuesta);
+    }
 	
 	public boolean inicioSesion() throws RutInvalidoException{
 		rutx = Integer.parseInt(VentanaInicioSesion.campoRut.getText());
@@ -220,14 +224,12 @@ public class Datos {
 		PlibreConsulta++;
 	}
 	
-	
 	public Object[] listarConsultas(Object[] fila, int usuario, int IDcons){
 		
 		pers = persona.get(usuario);
 		c = consultas.get(IDcons);
 		
-		fila[0] = String.valueOf(pers.listar(c));
-		
+		fila[0] = String.valueOf(pers.buscar(IDcons));
 		if(fila[0].equals(String.valueOf(-1)) == false) {
 			fila[1] = c.getDescripcion();
 			return fila;
@@ -241,30 +243,36 @@ public class Datos {
 		if (usuario == c.getIdCreador()) {
 			fila[0] = String.valueOf(IDcons);
 			fila[1] = c.getDescripcion();
-			
 			return fila;
 		}
 		return null;
 	}
 	
-	public Object[] listarRespuestas(Object[] fila, int idUsuario, int IDcons){
-		
-		pers = persona.get(idUsuario);
+	public Object[] buscarConsultas(Object[] fila, int usuario, int IDcons) {
 		c = consultas.get(IDcons);
-		Respuesta r = pers.getRespuesta(IDcons);
-		
-		if(idUsuario == r.getIdCreador()) {
-			fila[0] = String.valueOf(IDcons);
+
+		if(c.getDescripcion().toLowerCase().contains(VentanaBuscarConsulta.campoPalabra.getText().toLowerCase())) {
+			fila[0] = IDcons;
 			fila[1] = c.getDescripcion();
-			fila[2] = r.getDescripcion();
-			
 			return fila;
 		}
 		return null;
+	}
+	
+	public Object[] listarRespuestas(Object[] fila, int idUsuario, int IDRes){
+		pers = persona.get(idUsuario);
+		
+		Respuesta r = pers.getRespuesta(IDRes);
+		c = consultas.get(r.idPregunta);
+		
+		fila[0] = String.valueOf(r.idPregunta);
+		fila[1] = c.getDescripcion();
+		fila[2] = r.getDescripcion();			
+		return fila;
 	}
 
 	
-	public void editarRespuesta(String idRes, String idPersona, String res) {
+	public void editarRespuesta(String idCons, String res, Persona usuario) {
 		String [] lineas = new String[10];
 		int cont = 0;
 		
@@ -274,11 +282,8 @@ public class Datos {
 
 			while(linea != null) {
 				String datos[] = linea.split(";");
-				
-				if((datos[0].equals(idRes) && datos[1].equals(idPersona))) {
-					
-					linea = datos[0] + ";" + datos[1] + ";" + res;
-					System.out.println(linea);
+				if((datos[1].equals(idCons) && datos[2].equals(String.valueOf(usuario.getId())))) {
+					linea = datos[0] + ";" + datos[1] + ";" + datos[2] + ";" + res;
 					lineas[cont] = linea;
 				}
 				else {
@@ -289,7 +294,6 @@ public class Datos {
 				cont++;
 			}
 			BufferedWriter editor = new BufferedWriter(new FileWriter("src/bd_respuesta.csv"));
-			
 			for (int i  = 0; i < cont; i++) {
 				if(i != cont - 1) editor.append(lineas[i] + "\n");
 				else editor.append(lineas[i]);
@@ -302,11 +306,11 @@ public class Datos {
 			System.err.println(ex.getMessage());
 		}
 		
-		// Eliminar del array
-		
+		// editar del array
+    	usuario.editarRespuesta(idCons, usuario, res);
 	}
-
-	public boolean eliminarRespuesta(String numRes, String idPersona) {
+	
+	public boolean eliminarRespuesta(String idCons, String idPersona, Persona usuario, String idRespuesta) {
 		boolean flag = true;
 		String [] lineas = new String[10];
 		int cont = 0;
@@ -318,7 +322,7 @@ public class Datos {
 			while(linea != null) {
 				String datos[] = linea.split(";");
 				//
-				if((datos[0].equals(numRes) && datos[1].equals(idPersona))) {
+				if((datos[1].equals(idCons) && datos[2].equals(idPersona))) {
 					flag = false;
 				}
 				else {
@@ -341,6 +345,10 @@ public class Datos {
 		}	catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
+		
+		usuario.eliminarRespuesta(idRespuesta, usuario);
+		
 		return flag;
+
 	}
 }

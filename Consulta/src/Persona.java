@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class Persona {
@@ -25,8 +26,8 @@ public class Persona {
     // Getter y Setter
     
     public void newRespuesta(int x, String respuesta) {
-        Respuesta aux = new Respuesta(x, id, respuesta);
-        respuestas.put(x, aux);
+        Respuesta aux = new Respuesta(respuestas.size(), x, id, respuesta);
+        respuestas.put(respuestas.size(), aux);
         aux.guardarEnCsv();
     }
     
@@ -36,25 +37,52 @@ public class Persona {
         aux.guardarEnCsv();
     }
     
-    public int listar(Consulta c) {
-    	
-    	if(getRespuesta(c.getIdConsulta()) == null) return c.getIdConsulta();
-		
-    	return -1;
+    public void editarRespuesta(String idPregunta, Persona usuario, String respuesta){
+    	for (Map.Entry<Integer, Respuesta> entry : respuestas.entrySet()) {
+   	     	Respuesta r = entry.getValue();
+   	     	if (r.getIdConsulta() == Integer.parseInt(idPregunta)) {
+   	     		r.setDescripcion(respuesta);
+   	     	}
+    	}
     }
     
+    public void eliminarRespuesta(String idRespuesta, Persona usuario){
+     	usuario.respuestas.remove(Integer.parseInt(idRespuesta));
+	}
+    
+    public String getIdRespuesta(String id) {
+    	for (Map.Entry<Integer, Respuesta> entry : respuestas.entrySet()) {
+   	     	Respuesta r = entry.getValue();
+   	     	if (r.getIdConsulta() == Integer.parseInt(id)) {
+   	     		return String.valueOf(r.idRespuesta);
+   	     	}
+    	}
+    	return null;
+    }
+    
+    public int buscar(int idConsulta){
+    	for (Map.Entry<Integer, Respuesta> entry : respuestas.entrySet()) {
+    	     Respuesta r = entry.getValue();
+    	     if (r.getIdConsulta() == idConsulta) return -1;
+    	}
+    	return idConsulta;
+    }
     public int getsizeMap(Persona p) {
     	int tam = p.respuestas.size();
     	return tam;
     }
     
-    public void setRespuesta(int idPregunta, int idCreador, String respuesta) {
-        Respuesta aux = new Respuesta(idPregunta, idCreador, respuesta);
-        respuestas.put(idPregunta,aux);
+    public HashMap<Integer, Respuesta> getMap() {
+    	return respuestas;
     }
     
-    public Respuesta getRespuesta(int id_pregunta) {
-    	return respuestas.get(id_pregunta);
+    public void setRespuesta(int idRespuesta,int idPregunta, int idCreador, String respuesta) {
+        Respuesta aux = new Respuesta(idRespuesta, idPregunta, idCreador, respuesta);
+        respuestas.put(idRespuesta,aux);
+    }
+    
+    public Respuesta getRespuesta(int id_respuesta) {
+    	return respuestas.get(id_respuesta);
     }
 	
     public int getId() {

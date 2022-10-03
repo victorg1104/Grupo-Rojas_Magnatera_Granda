@@ -23,10 +23,10 @@ public class VentanaUsuarioRegistrado extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel mensajeBienvenida = new JLabel("Bienvenido " + usuario.getNombre());
-		mensajeBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel mensajeBienvenida = new JLabel("Bienvenid@ " + usuario.getNombre());
+		mensajeBienvenida.setHorizontalAlignment(SwingConstants.LEADING);
 		mensajeBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		mensajeBienvenida.setBounds(21, 11, 391, 37);
+		mensajeBienvenida.setBounds(10, 10, 391, 37);
 		contentPane.add(mensajeBienvenida);
 		
 		JButton botonCrearConsulta = new JButton("Crear consulta");
@@ -38,13 +38,13 @@ public class VentanaUsuarioRegistrado extends JFrame {
 			}
 		});
 		botonCrearConsulta.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		botonCrearConsulta.setBounds(151, 97, 125, 23);
+		botonCrearConsulta.setBounds(151, 80, 146, 23);
 		contentPane.add(botonCrearConsulta);
 		
 		JLabel mensajeOpciones = new JLabel("Seleccione una opción");
 		mensajeOpciones.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeOpciones.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		mensajeOpciones.setBounds(112, 59, 196, 23);
+		mensajeOpciones.setBounds(125, 47, 196, 23);
 		contentPane.add(mensajeOpciones);
 		
 		JButton botonResponder = new JButton("Responder consulta");
@@ -56,7 +56,7 @@ public class VentanaUsuarioRegistrado extends JFrame {
 			}
 		});
 		botonResponder.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		botonResponder.setBounds(141, 134, 146, 23);
+		botonResponder.setBounds(151, 113, 146, 23);
 		contentPane.add(botonResponder);
 		
 		JButton botonListarRespuestas = new JButton("Tus respuestas");
@@ -68,7 +68,7 @@ public class VentanaUsuarioRegistrado extends JFrame {
 			}
 		});
 		botonListarRespuestas.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		botonListarRespuestas.setBounds(151, 168, 125, 23);
+		botonListarRespuestas.setBounds(151, 146, 146, 23);
 		contentPane.add(botonListarRespuestas);
 		
 		JButton botonListarConsultas = new JButton("Tus consultas");
@@ -80,7 +80,7 @@ public class VentanaUsuarioRegistrado extends JFrame {
 			}
 		});
 		botonListarConsultas.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		botonListarConsultas.setBounds(151, 203, 125, 23);
+		botonListarConsultas.setBounds(151, 179, 146, 23);
 		contentPane.add(botonListarConsultas);
 		
 		JButton botonSalirMenu = new JButton("Salir");
@@ -89,8 +89,21 @@ public class VentanaUsuarioRegistrado extends JFrame {
 				System.exit(0);
 			}
 		});
+		
 		botonSalirMenu.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		botonSalirMenu.setBounds(339, 229, 85, 21);
 		contentPane.add(botonSalirMenu);
+		JButton botonBuscarConsulta = new JButton("Buscar consultas");
+        botonBuscarConsulta.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                VentanaBuscarConsulta ventana = new VentanaBuscarConsulta(datos, usuario);
+                ventana.setVisible(true);
+
+                dispose();
+            }
+        });
+        botonBuscarConsulta.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        botonBuscarConsulta.setBounds(151, 212, 146, 23);
+        contentPane.add(botonBuscarConsulta);
 	}
 }

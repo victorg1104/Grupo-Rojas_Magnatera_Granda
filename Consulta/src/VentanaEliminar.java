@@ -2,6 +2,9 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -74,7 +77,7 @@ public class VentanaEliminar extends JFrame {
 	scrollPane.setViewportView(tablaRespuestas);
 			
 	txtId = new JTextField();
-	txtId.setBounds(258, 297, 37, 20);
+	txtId.setBounds(214, 297, 37, 20);
 	contentPane_1.add(txtId);
 	txtId.setColumns(10);
 			
@@ -88,27 +91,34 @@ public class VentanaEliminar extends JFrame {
 			
 			String id = txtId.getText();
 			final VentanaUsuarioRegistrado ventanaRegistrado;
-			
-			boolean flag = datos.eliminarRespuesta(id, String.valueOf(usuario.getId()));
+			String idRes = usuario.getIdRespuesta(id);
+			boolean flag;
+			if(idRes != null) {
+				flag = datos.eliminarRespuesta(id, String.valueOf(usuario.getId()), usuario, idRes);
+			}else flag = true;
 			
 			if(!flag)JOptionPane.showMessageDialog(null, "Respuesta eliminada con éxito.");
-			else JOptionPane.showMessageDialog(null, "Error al eliminar la respuesta.");
+			
+			else JOptionPane.showMessageDialog(null,"Error al eliminar la respuesta, ID incorrecto.");
 			
 			ventanaRegistrado = new VentanaUsuarioRegistrado(datos, usuario);
 			ventanaRegistrado.setVisible(true);
 			dispose();
 		}
-	});
-			
+	});	
 	botonAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 	botonAceptar.setBounds(538, 296, 89, 23);
 	contentPane_1.add(botonAceptar);
-				
 }
-	public void llenarTabla() {	
-		for (int i  = 0; i < usuario.getsizeMap(usuario) ; i++) {
+				
+	public void llenarTabla(){
+		HashMap<Integer, Respuesta> auxmap = usuario.getMap();
+        Set<Integer> keySet = auxmap.keySet();
+        ArrayList<Integer> listOfKeys  = new ArrayList<Integer>(keySet);
+        
+		for (int idRes : listOfKeys){
 			Object[] fila = new Object[3];
-			fila = datos.listarRespuestas(fila, usuario.getId(), i);
+			fila = datos.listarRespuestas(fila, usuario.getId(), idRes);
 			if (null != fila) model.addRow(fila);
 		}
 	} 

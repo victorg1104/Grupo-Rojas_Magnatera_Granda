@@ -3,6 +3,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -72,8 +75,8 @@ public class VentanaTusRespuestas extends JFrame {
 		
 		if (model.getRowCount() == 0) {
 			JOptionPane.showMessageDialog(null, "Usted no ha respondido ninguna consulta");
-			final VentanaUsuarioRegistrado ventanaUsuarioReg = new VentanaUsuarioRegistrado(datos, usuario);
-			ventanaUsuarioReg.setVisible(true);
+			/*final VentanaUsuarioRegistrado ventanaUsuarioReg = new VentanaUsuarioRegistrado(datos, usuario);
+			ventanaUsuarioReg.setVisible(true);*/
 			dispose();
 		}
 			
@@ -124,9 +127,13 @@ public class VentanaTusRespuestas extends JFrame {
 	}
 	
 	public void llenarTabla() {	
-		for (int i  = 0; i < usuario.getsizeMap(usuario) ; i++) {
+		HashMap<Integer, Respuesta> auxmap = usuario.getMap();
+        Set<Integer> keySet = auxmap.keySet();
+        ArrayList<Integer> listOfKeys  = new ArrayList<Integer>(keySet);
+        
+		for (int idRes : listOfKeys){
 			Object[] fila = new Object[3];
-			fila = datos.listarRespuestas(fila, usuario.getId(), i);
+			fila = datos.listarRespuestas(fila, usuario.getId(), idRes);
 			if (null != fila) model.addRow(fila);
 		}
 	}

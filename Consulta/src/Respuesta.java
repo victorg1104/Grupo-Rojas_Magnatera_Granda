@@ -5,19 +5,29 @@ import java.io.IOException;
 
 
 public class Respuesta extends Consulta{
-    public Respuesta(int idPregunta, int idCreador, String descripcion){
+	
+	public int idRespuesta;
+	
+    public Respuesta(int idRespuesta, int idPregunta, int idCreador, String descripcion){
         super(idPregunta, idCreador, descripcion);
+        this.idRespuesta = idRespuesta;
     }
-
+    
     public Respuesta(int idPregunta, int idCreador) {
         this.idPregunta = idPregunta;
         this.idCreador = idCreador;
         descripcion = "";
     }
-
+    
+    public int getIdRespuesta() {
+    	return idRespuesta;
+    }
+    
     public void guardarEnCsv() {
         try {
-            String content = "\n"+ String.valueOf(idPregunta)+
+            String content = "\n"+ String.valueOf(idRespuesta)+
+            		";"+
+            		String.valueOf(idPregunta)+
                     ";"+
                     String.valueOf(idCreador)+
                     ";"+
